@@ -106,52 +106,29 @@
     }
 
     .acesso-r-pido {
-      color: #38657d;
-      font-family: "IstokWeb-Regular", sans-serif;
-      font-size: 16px;
-      font-weight: 400;
-      margin-top: 30px;
-      margin-bottom: 10px;
-      text-align: center;
-      width: 100%;
-    }
+  color: #38657d;
+  font-family: "IstokWeb-Regular", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  text-align: center;         /* Centraliza o texto */
+  width: 100%;                /* Garante que o text-align funcione corretamente */
+}
 
-    .acesso-rapido-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      max-width: 350px;
-      width: 100%;
-      margin: 0 auto;
-    }
+.acesso-rapido-container {
+  display: flex;
+  justify-content: center;    /* Centraliza os círculos */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 350px;
+  width: 100%;
+  margin: 0 auto;             /* Centraliza o container em telas maiores */
+}
 
-    .circle {
-      width: 56px;  /* aumentei de 40px para 56px pra facilitar o clique */
-      height: 56px;
-      border-radius: 50%;
-      overflow: hidden;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: transform 0.2s;
-      box-shadow: none; /* removi sombra pra ficar fiel */
-    }
 
-    .circle img {
-      width: 28px; /* mantive o tamanho da imagem menor que o círculo */
-      height: 28px;
-      object-fit: contain;
-      user-select: none;
-    }
-
-    .circle:hover,
-    .circle:focus {
-      transform: scale(1.1);
-      outline: none;
-    }
+    
 
     @media (max-width: 400px) {
       .fa-a-o-login {
@@ -165,14 +142,6 @@
       }
       input {
         max-width: 100%;
-      }
-      .circle {
-        width: 48px;
-        height: 48px;
-      }
-      .circle img {
-        width: 24px;
-        height: 24px;
       }
     }
   </style>
@@ -188,6 +157,7 @@
     <div class="fa-a-o-login">Faça o login</div>
 
     <input type="email" id="email" name="email" placeholder="Digite seu e-mail" />
+
     <input type="password" id="senha" name="senha" placeholder="Digite sua senha" />
 
     <div class="rectangle-12" id="btn-login">
@@ -197,80 +167,39 @@
     <div class="acesso-r-pido"> ------------ Acesso rápido ------------</div>
 
     <div class="acesso-rapido-container">
-      <div class="circle" tabindex="0" id="login-google"><img src="image 1.png" alt="Google" /></div>
-      <div class="circle" tabindex="0" id="login-facebook"><img src="image 2.png" alt="Facebook" /></div>
-      <div class="circle" tabindex="0" id="login-twitter"><img src="image 3.png" alt="Twitter" /></div>
-      <div class="circle" tabindex="0" id="login-linkedin"><img src="image 4.png" alt="LinkedIn" /></div>
+      <div class="circle" tabindex="0"><img src="image 1.png" alt="Acesso 1" /></div>
+      <div class="circle" tabindex="0"><img src="image 2.png" alt="Acesso 2" /></div>
+      <div class="circle" tabindex="0"><img src="image 3.png" alt="Acesso 3" /></div>
+      <div class="circle" tabindex="0"><img src="image 4.png" alt="Acesso 4" /></div>
     </div>
   </div>
 
-  <!-- Firebase App (the core Firebase SDK) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
   <script>
-    const firebaseConfig = {
-            apiKey: "AIzaSyBOqDbKnGTkP-35Hjsga8hnPQFqQRp7AME", // SUA CHAVE API
-            authDomain: "senz-bae74.firebaseapp.com", // SEU DOMÍNIO DE AUTENTICAÇÃO
-            projectId: "senz-bae74", // SEU ID DE PROJETO
-            storageBucket: "senz-bae74.firebasestorage.app", // SEU BUCKET DE ARMAZENAMENTO
-            messagingSenderId: "604865943153", // SEU ID DE REMETENTE DE MENSAGENS
-            appId: "1:604865943153:web:b17d947e686a5becc4add0", // SEU ID DE APP
-            measurementId: "G-3GNNQWFVGH" // Seu ID de Medição (Analytics), opcional
-        };
-
-    // Inicializa Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    const auth = firebase.auth();
-
-    // Login com email e senha
-    document.getElementById('btn-login').addEventListener('click', () => {
-      const email = document.getElementById('email').value.trim();
-      const senha = document.getElementById('senha').value.trim();
-
-      if (!email || !senha) {
-        alert('Preencha o e-mail e a senha');
-        return;
-      }
-
-      auth.signInWithEmailAndPassword(email, senha)
-        .then(() => {
-          // Login ok, redireciona para conectar.html
-          window.location.href = 'conectar.html';
-        })
-        .catch(error => {
-          alert('Erro no login: ' + error.message);
-        });
-    });
-
-    // Login Google
-    const providerGoogle = new firebase.auth.GoogleAuthProvider();
-
-    const loginGoogleButton = document.getElementById('login-google');
-    loginGoogleButton.addEventListener('click', () => {
-      auth.signInWithPopup(providerGoogle)
-        .then(() => {
-          window.location.href = 'conectar.html';
-        })
-        .catch(error => {
-          alert('Erro no login com Google: ' + error.message);
-        });
-    });
-
-    // Só coloquei o botão Google funcionando, os outros apenas alertam
-    document.getElementById('login-facebook').addEventListener('click', () => alert('Em andamento'));
-    document.getElementById('login-twitter').addEventListener('click', () => alert('Em andamento'));
-    document.getElementById('login-linkedin').addEventListener('click', () => alert('Em andamento'));
-
-    // Acessibilidade teclado para os círculos sociais
+    // Alerta "Em andamento" ao clicar nas imagens de acesso rápido
     document.querySelectorAll('.circle').forEach(circle => {
-      circle.addEventListener('keydown', e => {
+      circle.addEventListener('click', () => {
+        alert('Em andamento');
+      });
+
+      circle.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          circle.click();
+          alert('Em andamento');
         }
       });
+    });
+
+    // Evento de clique do botão de login
+    document.getElementById('btn-login').addEventListener('click', () => {
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      if (email && senha) {
+        alert('Login realizado (simulado)');
+        // Aqui você pode redirecionar ou validar login
+      } else {
+        alert('Preencha o e-mail e a senha');
+      }
     });
   </script>
 </body>
