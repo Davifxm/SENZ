@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Técnicas Respiratórias</title>
+  <style>
+    :root {
+      --azul-principal: #05285C;
+      --azul-circulo: #3866A9;
+      --azul-claro: #eaf3f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Arial", sans-serif;}
+    body { background-color: white; color: #333; min-height: 100vh; display: flex; flex-direction: column;}
+    header {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 1.5rem; color: var(--azul-principal);}
+    header span { font-size: 0.9rem; color: #555; }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1rem 0 1rem;
+      text-align: center;
+      min-height: 0;
+    }
+    .pulmao-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 8rem;
+      margin-bottom: 1.2rem;
+      width: 100%;
+    }
+    .pulmao {
+      position: relative;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #3866A9, #2b4e80 80%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: expandir 5s ease-in-out infinite;
+      animation-play-state: paused;
+      transition: transform 0.3s;
+      overflow: visible;
+    }
+    .pulmao svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .pulmao .pulmao-arco { stroke: white; fill: none; opacity: 0.22; stroke-width: 5; transition: opacity 0.3s;}
+    .pulmao .pulmao-arco2 { stroke-width: 3; opacity: 0.14;}
+    .pulmao .pulmao-arco3 { stroke-width: 2; opacity: 0.09;}
+    @keyframes expandir {
+      0%, 100% { transform: scale(1);}
+      50% { transform: scale(1.15);}
+    }
+    .titulo { margin-top: 2.4rem; font-weight: bold; font-size: 1.2rem; color: var(--azul-principal);}
+    .barra { margin: 1rem 0; width: 60%; height: 4px; background-color: #ccc; position: relative; border-radius: 2px;}
+    .progresso { width: 40%; height: 100%; background-color: var(--azul-principal); border-radius: 2px;}
+    .botoes { display: flex; align-items: center; justify-content: center; gap: 1rem;}
+    .botao-play {
+      width: 50px; height: 50px;
+      background-color: var(--azul-principal); color: white; border: none;
+      border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .botao-play svg { width: 28px; height: 28px; fill: #fff;}
+    .dock {
+      position: fixed;
+      bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 36px; background: #f7f7f7; padding: 18px 36px;
+      border-radius: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.13); z-index: 999; flex-wrap: wrap;
+    }
+    .dock-icon {
+      width: 50px; height: 50px; border-radius: 50%; background: #e3e3e3;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.3s; cursor: pointer;
+    }
+    .dock-icon:hover { transform: scale(1.15);}
+    .dock-icon.active { background: var(--azul-circulo);}
+    .dock-icon svg { width: 28px; height: 28px; fill: var(--azul-principal);}
+    .dock-icon.active svg { fill: #fff;}
+    @media (max-width: 900px) {
+      .pulmao { width: 260px; height: 260px; }
+      .pulmao svg { width: 100%; height: 100%; }
+      .dock { gap: 16px; padding: 12px 18px; border-radius: 22px; }
+      .dock-icon { width: 40px; height: 40px; }
+      .dock-icon svg { width: 22px; height: 22px; }
+      .pulmao-container { margin-top: 5.5rem; }
+    }
+    @media (max-width: 480px) {
+      .pulmao { width: 170px; height: 170px; }
+      .pulmao svg { width: 100%; height: 100%; }
+      header h1 { font-size: 1.1rem;}
+      header span { font-size: 0.8rem;}
+      .dock { gap: 7px; padding: 8px 10px; border-radius: 16px;}
+      .dock-icon { width: 28px; height: 28px;}
+      .dock-icon svg { width: 13px; height: 13px;}
+      .pulmao-container { margin-top: 2.7rem;}
+    }
+  </style>
+
+  <script>
+    let animando = false;
+    let pulmao, icon, svg, arco1, arco2, arco3, animFrame;
+    let progress = 0;
+    function toggleAnimacao() {
+      animando = !animando;
+      if (animando) {
+        pulmao.style.animationPlayState = 'running';
+        icon.setAttribute('d', 'M6 4h4v16H6zm8 0h4v16h-4z');
+        animateSVG();
+      } else {
+        pulmao.style.animationPlayState = 'paused';
+        icon.setAttribute('d', 'M8 5v14l11-7z');
+        cancelAnimationFrame(animFrame);
+      }
+    }
+    function animateSVG() {
+      const dur = 5000;
+      const start = performance.now() - (progress * dur);
+      function frame(now) {
+        let t = ((now - start) % dur) / dur;
+        let s = 1 + 0.15 * Math.sin(t * 2 * Math.PI);
+        let base = 180;
+        arco1.setAttribute('r', (base * 0.72 * s).toFixed(1));
+        arco2.setAttribute('r', (base * 0.52 * s).toFixed(1));
+        arco3.setAttribute('r', (base * 0.33 * s).toFixed(1));
+        progress = t;
+        animFrame = requestAnimationFrame(frame);
+      }
+      animFrame = requestAnimationFrame(frame);
+    }
+    function setActive(el) {
+      document.querySelectorAll('.dock-icon').forEach(icon => {
+        icon.classList.remove('active');
+      });
+      el.classList.add('active');
+    }
+    window.onload = () => {
+      pulmao = document.querySelector('.pulmao');
+      icon = document.getElementById('icon-play');
+      svg = document.getElementById('arcos-pulmao');
+      arco1 = document.getElementById('arco1');
+      arco2 = document.getElementById('arco2');
+      arco3 = document.getElementById('arco3');
+      pulmao.style.animationPlayState = 'paused';
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Técnicas Respiratórias</h1>
+      <span>Práticas para aliviar o estresse</span>
+    </div>
+  </header>
+  <main>
+    <div class="pulmao-container">
+      <div class="pulmao" id="pulmao">
+        <svg id="arcos-pulmao" viewBox="0 0 360 360">
+          <circle id="arco1" class="pulmao-arco" cx="180" cy="180" r="130"/>
+          <circle id="arco2" class="pulmao-arco pulmao-arco2" cx="180" cy="180" r="90"/>
+          <circle id="arco3" class="pulmao-arco pulmao-arco3" cx="180" cy="180" r="60"/>
+        </svg>
+      </div>
+    </div>
+    <div class="titulo">Respiração 4-7-8</div>
+    <div class="barra"><div class="progresso"></div></div>
+    <div class="botoes">
+      <button class="botao-play" onclick="toggleAnimacao()" id="btn-play">
+        <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+    </div>
+  </main>
+  <div class="dock">
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </div>
+    <div class="dock-icon active" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro - SENZ</title>
+    <style>
+        /* SEU CSS DA PÁGINA DE CADASTRO AQUI */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .senz-container { background: white; padding: 30px 20px; border-radius: 10px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { color: #2c5d74; margin-bottom: 20px; font-size: 1.8rem; }
+        .radio-group { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; flex-wrap: wrap; }
+        .radio-group label { flex: 1 1 48%; display: flex; align-items: stretch; }
+        .radio-box { flex: 1; background: #f9f9f9; border-radius: 10px; padding: 12px; font-size: 0.85rem; border: 1px solid #ccc; transition: all 0.3s ease; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%; min-height: 75px; }
+        input[type="radio"] { display: none; }
+        input[type="radio"]:checked + .radio-box { border: 2px solid #2c5d74; background-color: #eef5fa; transform: scale(1.02); box-shadow: 0 0 6px rgba(44, 93, 116, 0.3); }
+        .access-text { margin: 10px 0; color: #555; font-weight: 500; font-size: 1rem; }
+        .social-icons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .social-icons img { width: 28px; height: 28px; cursor: pointer; transition: transform 0.2s; }
+        .social-icons img:hover { transform: scale(1.1); }
+        .divider { margin: 10px 0; display: flex; align-items: center; text-align: center; color: #666; font-size: 0.9rem; }
+        .divider::before, .divider::after { content: ""; flex: 1; border-bottom: 1px solid #ccc; }
+        .divider::before { margin-right: 10px; }
+        .divider::after { margin-left: 10px; }
+        form { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        form input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 0.95rem; }
+        form input:focus { outline: none; border-color: #2c5d74; box-shadow: 0 0 5px rgba(44, 93, 116, 0.2); }
+        button { background-color: #2c5d74; color: white; padding: 12px; border: none; border-radius: 25px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: background-color 0.3s, transform 0.2s; }
+        button:hover { background-color: #1e3f55; transform: scale(1.01); }
+        .terms { font-size: 0.75rem; color: #777; margin-top: 15px; }
+        .terms a { color: #2c5d74; text-decoration: none; }
+        .terms a:hover { text-decoration: underline; }
+        .radio-box.active { animation: pulse 0.2s ease-in-out; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.04); } 100% { transform: scale(1); } }
+        @media (max-width: 480px) { .senz-container { padding: 25px 15px; } .radio-group label { flex: 1 1 100%; } .social-icons img { width: 24px; height: 24px; } h2 { font-size: 1.5rem; } button { font-size: 0.95rem; } }
+    </style>
+</head>
+<body>
+    <div class="senz-container">
+        <h2>Comece grátis</h2>
+
+        <div class="radio-group">
+            <label>
+                <input type="radio" name="pulseira" value="possui" checked />
+                <div class="radio-box">
+                    <strong>Eu possuo uma pulseira senz</strong><br />
+                    <span>Começar a configurar</span>
+                </div>
+            </label>
+            <label>
+                <input type="radio" name="pulseira" value="nao_possui" />
+                <div class="radio-box">
+                    <strong>Não possuo uma senz</strong><br />
+                    <span>Pular configuração</span>
+                </div>
+            </label>
+        </div>
+
+        <div class="access-text">Acesso rápido:</div>
+
+        <div class="social-icons">
+            <img src="https://img.icons8.com/color/48/google-logo.png" alt="Google" id="google-login" />
+            <img src="https://img.icons8.com/ios-filled/48/facebook-new.png" alt="Facebook" id="facebook-login" />
+            <img src="https://img.icons8.com/ios-filled/48/mac-os.png" alt="Apple" id="apple-login" />
+            <img src="https://img.icons8.com/ios-filled/48/windows8.png" alt="Microsoft" id="microsoft-login" />
+        </div>
+
+        <div class="divider"><span>ou</span></div>
+
+        <form id="signup-form">
+            <input type="text" placeholder="nome completo" required id="full-name" />
+            <input type="email" placeholder="e-mail" required id="email" />
+            <input type="tel" placeholder="telefone" id="phone" />
+            <input type="password" placeholder="senha" required id="password" />
+            <button type="submit">criar conta</button>
+        </form>
+
+        <p class="terms">
+            Ao criar uma conta, você concorda com nossos <br />
+            <a href="#">termos de uso</a> e <a href="#">política de privacidade</a>
+        </p>
+        <p id="error-message" style="color: red; margin-top: 10px; text-align: center;"></p>
+    </div>
+
+    <script type="module">
+        // Sua configuração do Firebase.
+        // **IMPORTANTE**: Substitua esses valores pelos do seu projeto Firebase.
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOqDbKnGTkP-35Hjsga8hnPQFqQRp7AME", // SUA CHAVE API
+            authDomain: "senz-bae74.firebaseapp.com", // SEU DOMÍNIO DE AUTENTICAÇÃO
+            projectId: "senz-bae74", // SEU ID DE PROJETO
+            storageBucket: "senz-bae74.firebasestorage.app", // SEU BUCKET DE ARMAZENAMENTO
+            messagingSenderId: "604865943153", // SEU ID DE REMETENTE DE MENSAGENS
+            appId: "1:604865943153:web:b17d947e686a5becc4add0", // SEU ID DE APP
+            measurementId: "G-3GNNQWFVGH" // Seu ID de Medição (Analytics), opcional
+        };
+
+        // Inicializa Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            GoogleAuthProvider,
+            FacebookAuthProvider,
+            OAuthProvider, // Usado para Apple e Microsoft
+            signInWithPopup,
+            updateProfile
+        } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+
+        // Inicializa o app Firebase e os serviços
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app); // Inicializa o Firestore
+
+        // Garante que o DOM esteja totalmente carregado antes de manipular elementos
+        document.addEventListener('DOMContentLoaded', () => {
+            const radios = document.querySelectorAll('input[type="radio"]');
+            const errorMessageElement = document.getElementById('error-message');
+            const signupForm = document.getElementById('signup-form');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const fullNameInput = document.getElementById('full-name');
+            const phoneInput = document.getElementById('phone');
+
+            // Variável para armazenar se o usuário possui a pulseira
+            let possuiPulseira = document.querySelector('input[name="pulseira"]:checked').value === 'possui';
+
+            // --- Lógica do Radio Button ---
+            radios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    radios.forEach(r => {
+                        const box = r.nextElementSibling;
+                        if (box) {
+                            box.classList.remove('active');
+                        }
+                    });
+                    const selectedBox = radio.nextElementSibling;
+                    if (selectedBox) {
+                        selectedBox.classList.add('active');
+                    }
+                    possuiPulseira = radio.value === 'possui'; // Atualiza a variável ao mudar a seleção
+                });
+            });
+
+            // --- Função para exibir mensagens (erro ou sucesso) ---
+            const showMessage = (message, isError = true) => {
+                errorMessageElement.textContent = message;
+                errorMessageElement.style.color = isError ? "red" : "green";
+            };
+
+            // --- Função para limpar mensagens ---
+            const clearMessage = () => {
+                errorMessageElement.textContent = "";
+            };
+
+            // --- Função para salvar dados adicionais do usuário no Firestore ---
+            const saveUserData = async (userId, userName, userEmail, userPhone, hasSenzBracelet) => {
+                try {
+                    await setDoc(doc(db, "users", userId), {
+                        fullName: userName,
+                        email: userEmail,
+                        phone: userPhone,
+                        hasSenzBracelet: hasSenzBracelet,
+                        createdAt: new Date()
+                    }, { merge: true }); // 'merge: true' para não sobrescrever dados existentes (útil para logins sociais)
+                    console.log("Dados do usuário salvos/atualizados no Firestore com ID:", userId);
+                } catch (e) {
+                    console.error("Erro ao salvar dados do usuário no Firestore:", e);
+                    showMessage("Erro ao salvar dados adicionais. Tente novamente.", true);
+                }
+            };
+
+            // --- Event Listener para o formulário de Cadastro com E-mail/Senha ---
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); // Evita o recarregamento da página
+                clearMessage(); // Limpa mensagens anteriores
+
+                const email = emailInput.value;
+                const password = passwordInput.value;
+                const fullName = fullNameInput.value;
+                const phone = phoneInput.value;
+
+                try {
+                    // 1. Cria o usuário com e-mail e senha no Firebase Authentication
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+
+                    // 2. Atualiza o perfil do usuário com o nome de exibição (displayName)
+                    await updateProfile(user, { displayName: fullName });
+
+                    // 3. Salva os dados adicionais do usuário no Firestore
+                    await saveUserData(user.uid, fullName, email, phone, possuiPulseira);
+
+                    console.log("Usuário cadastrado com sucesso:", user);
+                    showMessage("Cadastro realizado com sucesso! Redirecionando...", false);
+
+                    // Redireciona após um pequeno atraso para o usuário ver a mensagem
+                    setTimeout(() => {
+                        window.location.href = 'conectar.html'; // Altere para a sua página de destino
+                    }, 1500);
+
+                } catch (error) {
+                    console.error("Erro no cadastro:", error.code, error.message);
+                    let userFriendlyMessage = "Ocorreu um erro no cadastro.";
+                    switch (error.code) {
+                        case 'auth/email-already-in-use':
+                            userFriendlyMessage = "Este e-mail já está em uso.";
+                            break;
+                        case 'auth/invalid-email':
+                            userFriendlyMessage = "O formato do e-mail é inválido.";
+                            break;
+                        case 'auth/weak-password':
+                            userFriendlyMessage = "A senha deve ter pelo menos 6 caracteres.";
+                            break;
+                        case 'auth/network-request-failed':
+                            userFriendlyMessage = "Sem conexão com a internet. Verifique sua rede.";
+                            break;
+                        default:
+                            userFriendlyMessage = "Erro ao criar conta. Tente novamente.";
+                    }
+                    showMessage(userFriendlyMessage, true); // Exibe mensagem de erro
+                }
+            });
+
+            // --- Lógica de Social Logins (Google, Facebook, Apple, Microsoft) ---
+            const socialLogin = async (providerInstance) => {
+                clearMessage(); // Limpa mensagens anteriores
+
+                try {
+                    const result = await signInWithPopup(auth, providerInstance);
+                    const user = result.user;
+
+                    // Tenta pegar o nome e e-mail do provedor, usando fallback
+                    const fullName = user.displayName || user.email.split('@')[0] || "";
+                    const email = user.email || "";
+
+                    // Salva/atualiza dados adicionais no Firestore
+                    // Nota: Telefone geralmente não vem de provedores sociais e pode ser atualizado depois
+                    await saveUserData(user.uid, fullName, email, "", possuiPulseira);
+
+                    console.log("Login social bem-sucedido:", user);
+                    showMessage(`Login com ${providerInstance.providerId.split('.')[0]} realizado com sucesso! Redirecionando...`, false);
+
+                    setTimeout(() => {
+                        window.location.href = 'conectar.html'; // Altere para a sua página de destino
+                    }, 1500);
+
+                } catch (error) {
+                    console.error(`Erro no login social (${providerInstance.providerId}):`, error.code, error.message);
+                    let userFriendlyMessage = `Erro ao fazer login com ${providerInstance.providerId.split('.')[0]}. Tente novamente.`;
+
+                    switch (error.code) {
+                        case 'auth/popup-closed-by-user':
+                            userFriendlyMessage = "O pop-up de login foi fechado.";
+                            break;
+                        case 'auth/cancelled-popup-request':
+                            userFriendlyMessage = "Pedido de pop-up cancelado. Tente novamente.";
+                            break;
+                        case 'auth/account-exists-with-different-credential':
+                            userFriendlyMessage = "Já existe uma conta com este e-mail usando outro método de login. Tente fazer login com seu método original.";
+                            break;
+                        case 'auth/unauthorized-domain':
+                            userFriendlyMessage = "Domínio não autorizado. Adicione seu domínio nas configurações do Firebase Authentication.";
+                            break;
+                        case 'auth/auth-domain-config-required':
+                            userFriendlyMessage = "Configuração de domínio de autenticação necessária. Verifique suas credenciais de provedor social.";
+                            break;
+                        case 'auth/operation-not-allowed':
+                            userFriendlyMessage = `O login com ${providerInstance.providerId.split('.')[0]} não está ativado no Firebase.`;
+                            break;
+                        default:
+                            userFriendlyMessage = `Erro inesperado no login social.`;
+                    }
+                    showMessage(userFriendlyMessage, true);
+                }
+            };
+
+            // --- Event Listeners para os botões de login social ---
+            document.getElementById('google-login').addEventListener('click', () => socialLogin(new GoogleAuthProvider()));
+            document.getElementById('facebook-login').addEventListener('click', () => socialLogin(new FacebookAuthProvider()));
+            document.getElementById('apple-login').addEventListener('click', () => socialLogin(new OAuthProvider('apple.com')));
+            document.getElementById('microsoft-login').addEventListener('click', () => socialLogin(new OAuthProvider('microsoft.com')));
+        });
+    </script>
+</body>
+</html>
