@@ -7,58 +7,188 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height:100%; font-family:"Inter",sans-serif; background:#fff; color:#05285c; display:flex; flex-direction:column; }
+    html, body {
+      height: 100%;
+      font-family: "Inter", sans-serif;
+      background: #fff;
+      color: #05285c;
+      display: flex;
+      flex-direction: column;
+    }
     body { justify-content: space-between; padding-bottom: 100px; }
-    .tela-12 { padding:20px; flex:1; }
-    .frequ-ncia-card-aca { color:#133a6c; font-weight:600; font-size:1.5rem; margin-bottom:4px; }
-    ._29-de-junho { font-weight:300; font-size:0.9rem; margin-bottom:12px; color:#133a6c; }
-    .rectangle-30 { background:rgba(235,242,255,0.89); border-radius:8px; width:100%; padding:15px; display:flex; justify-content:center; align-items:center; margin-bottom:12px; }
-    canvas { width:100% !important; height:auto !important; }
-    ._76-bpm { font-weight:600; font-size:2rem; opacity:0.83; margin:12px 0 20px; color:#000; }
-    .rectangle-38, .rectangle-39, .rectangle-40 { background:#fff; border-radius:9px; border:1px solid rgba(0,0,0,0.09); padding:15px; margin-bottom:15px; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
-    .rectangle-40 ul { padding-left:20px; margin-top:10px; }
-    .rectangle-40 li { margin-bottom:8px; }
-    @media(max-width:480px) { .tela-12 { padding:15px; padding-bottom:100px; } .frequ-ncia-card-aca { font-size:1.3rem; } ._76-bpm { font-size:1.6rem; } }
-    .dock { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:flex; gap:22px; background:#f7f7f7; padding:12px 20px; border-radius:20px; box-shadow:0 3px 10px rgba(0,0,0,0.1); z-index:999; }
-    .dock-icon { width:42px; height:42px; border-radius:50%; background:#e3e3e3; display:flex; align-items:center; justify-content:center; transition:transform .2s, background .3s; cursor:pointer; }
-    .dock-icon:hover { transform:scale(1.15); }
-    .dock-icon.active { background:#3866A9; }
-    .dock-icon svg { width:24px; height:24px; fill:#05285c; }
-    .dock-icon.active svg { fill:#fff; }
+
+    /* Tela de Conexão */
+    .conectar-view {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 430px;
+      width: 100%;
+      margin: auto;
+    }
+    .conecte-sua-pulseira {
+      color: #38657d;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 40px;
+      text-align: center;
+    }
+    .bluetooth-container {
+      margin-top: 60px;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .ellipse-1, .ellipse-2 {
+      border-radius: 50%;
+      position: absolute;
+    }
+    .ellipse-2 {
+      width: 140px;
+      height: 140px;
+      background: #4c92b8;
+      opacity: 0.5;
+    }
+    .ellipse-1 {
+      width: 80px;
+      height: 80px;
+      background: #4c92b8;
+      top: 30px;
+      left: 30px;
+      opacity: 0.5;
+    }
+    .bluetooth {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      z-index: 2;
+    }
+    .connect-status {
+      color: rgba(51, 73, 84, 0.63);
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 60px;
+      max-width: 90%;
+    }
+    .connect-btn {
+      background: #609ebf;
+      border-radius: 100px;
+      height: 40px;
+      padding: 0 40px;
+      margin-top: 40px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Tela EDA */
+    .eda-view { display: none; padding: 20px; flex: 1; }
+    .frequ-ncia-card-aca {
+      color: #133a6c;
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+    ._29-de-junho {
+      font-weight: 300;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      color: #133a6c;
+    }
+    .rectangle-30 {
+      background: rgba(235, 242, 255, 0.89);
+      border-radius: 8px;
+      width: 100%;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+      height: 300px;
+    }
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    ._76-bpm {
+      font-weight: 600;
+      font-size: 2rem;
+      opacity: 0.83;
+      margin: 12px 0 20px;
+      color: #000;
+    }
+    .rectangle-38, .rectangle-39, .rectangle-40 {
+      background: #fff;
+      border-radius: 9px;
+      border: 1px solid rgba(0, 0, 0, 0.09);
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .rectangle-40 ul { padding-left: 20px; margin-top: 10px; }
+    .rectangle-40 li { margin-bottom: 8px; }
+
+    /* Responsivo */
+    @media(max-width:480px) {
+      .conecte-sua-pulseira { font-size: 1.5rem; }
+      .connect-status { font-size: 1rem; }
+      .frequ-ncia-card-aca { font-size: 1.3rem; }
+      ._76-bpm { font-size: 1.6rem; }
+      .eda-view { padding: 15px; }
+    }
   </style>
 </head>
 <body>
-  <div class="tela-12">
+
+  <!-- CONEXÃO -->
+  <div class="conectar-view" id="conectarView">
+    <div class="conecte-sua-pulseira">Conecte sua pulseira</div>
+    <div class="bluetooth-container">
+      <div class="ellipse-2"></div>
+      <div class="ellipse-1"></div>
+      <img class="bluetooth" src="Bluetooth.png" alt="Bluetooth" />
+    </div>
+    <div class="connect-status" id="statusLabel">Aproxime sua pulseira SENZ</div>
+    <div class="connect-btn" onclick="conectarBLE()">Conectar</div>
+  </div>
+
+  <!-- MONITORAMENTO -->
+  <div class="eda-view" id="edaView">
     <div class="frequ-ncia-card-aca">EDA</div>
     <div class="_29-de-junho" id="dateDisplay"></div>
     <div class="rectangle-30">
       <canvas id="bpmChart"></canvas>
     </div>
     <div class="_76-bpm" id="lastBpmDisplay">-- bpm</div>
-    <div class="rectangle-38"><p id="analysisText">Aguardando batimentos...</p></div>
-    <div class="rectangle-39">
-      <p><strong>Não há riscos se você se sente bem.</strong><br />Se houver apatia emocional ou sensação de desconexão, pode ser interessante buscar orientação.</p>
+    <div class="rectangle-38">
+      <p id="analysisText">Aguardando batimentos...</p>
     </div>
-    <div class="rectangle-40"><strong>Como manter estável:</strong><ul><li>Pratique técnicas de relaxamento</li><li>Faça pausas durante o dia</li><li>Evite estímulos excessivos</li><li>Converse com pessoas próximas</li><li>Mantenha rotina com atividades prazerosas</li></ul></div>
-  </div>
-
-  <div class="dock">
-    <div class="dock-icon active" onclick="setActive(this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
-    <div class="dock-icon" onclick="setActive(this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
-    <div class="dock-icon" onclick="setActive(this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg></div>
-    <div class="dock-icon" onclick="setActive(this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/></svg></div>
-    <div class="dock-icon" onclick="setActive(this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+    <div class="rectangle-39">
+      <p><strong>Não há riscos se você se sente bem.</strong><br />
+        Se houver apatia emocional ou sensação de desconexão, pode ser interessante buscar orientação.</p>
+    </div>
+    <div class="rectangle-40">
+      <strong>Como manter estável:</strong>
+      <ul>
+        <li>Pratique técnicas de relaxamento</li>
+        <li>Faça pausas durante o dia</li>
+        <li>Evite estímulos excessivos</li>
+        <li>Converse com pessoas próximas</li>
+        <li>Mantenha rotina com atividades prazerosas</li>
+      </ul>
+    </div>
   </div>
 
   <script>
-    function setActive(el) {
-      document.querySelectorAll('.dock-icon').forEach(icon => icon.classList.remove('active'));
-      el.classList.add('active');
-    }
-
-    // Data atual formatada
-    document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
-
     let bpmChart, dataRecords = [];
 
     function initChart() {
@@ -76,10 +206,15 @@
           }]
         },
         options: {
-          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
           scales: {
             x: { title: { display: true, text: 'Hora' } },
-            y: { min: 40, max: 180 }
+            y: {
+              min: 40,
+              max: 180,
+              ticks: { stepSize: 20 }
+            }
           }
         }
       });
@@ -92,41 +227,45 @@
       bpmChart.data.labels = dataRecords.map(r => r.time);
       bpmChart.data.datasets[0].data = dataRecords.map(r => r.bpm);
       bpmChart.update();
-      document.getElementById('lastBpmDisplay').textContent = `${bpm} bpm`;
-
+      document.getElementById('lastBpmDisplay').textContent = `${bpm} bpm`;
       const diff = dataRecords.length > 1 ? Math.abs(bpm - dataRecords[dataRecords.length - 2].bpm) : 0;
       document.getElementById('analysisText').textContent =
         diff >= 15 ? `Variação significativa: Δ${diff} bpm` : 'Batimentos estáveis';
     }
 
-    async function connectBluetooth() {
+    async function conectarBLE() {
+      const status = document.getElementById('statusLabel');
       try {
+        status.textContent = "Conectando...";
         const device = await navigator.bluetooth.requestDevice({
-          filters: [{ namePrefix: 'ESP32' }],
-          optionalServices: ['generic_access']
+          filters: [{ name: 'ESP32 BPM' }],
+          optionalServices: ['1800']
         });
 
         const server = await device.gatt.connect();
-        const service = await server.getPrimaryService('generic_access');
-        const chars = await service.getCharacteristics();
-        const characteristic = chars[0];
+        const service = await server.getPrimaryService('1800');
+        const characteristic = await service.getCharacteristic('2A00');
 
         await characteristic.startNotifications();
-        characteristic.addEventListener('characteristicvaluechanged', evt => {
-          const val = new TextDecoder().decode(evt.target.value).trim();
-          const bpm = parseInt(val);
+        characteristic.addEventListener('characteristicvaluechanged', event => {
+          const value = new TextDecoder().decode(event.target.value);
+          const bpm = parseInt(value);
           if (!isNaN(bpm)) onNewBpm(bpm);
         });
-      } catch (err) {
-        console.error('Erro ao conectar Bluetooth:', err);
-        document.getElementById('analysisText').textContent = 'Falha na conexão Bluetooth.';
+
+        // Alterna as telas
+        document.getElementById('conectarView').style.display = 'none';
+        document.getElementById('edaView').style.display = 'block';
+        document.getElementById('dateDisplay').textContent =
+          new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
+      } catch (e) {
+        console.error(e);
+        status.textContent = "Erro ao conectar";
+        alert('Erro: ' + e.message);
       }
     }
 
-    window.addEventListener('load', () => {
-      initChart();
-      connectBluetooth();
-    });
+    window.addEventListener('load', initChart);
   </script>
 </body>
 </html>
