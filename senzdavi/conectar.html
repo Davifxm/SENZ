@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Conectar</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .tela-conectar-bonita-9 {
+      width: 100%;
+      max-width: 430px;
+      padding: 24px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #ffffff;
+    }
+
+    .conecte-sua-pulseira {
+      color: #38657d;
+      font-family: "IstokWeb-Bold", sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    /* Container das elipses + bluetooth */
+    .bluetooth-container {
+      position: relative;
+      margin-top: 60px;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ellipse-2 {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      background: #4c92b8;
+      border-radius: 50%;
+      opacity: 0.5;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .ellipse-1 {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: #4c92b8;
+      border-radius: 50%;
+      opacity: 0.5;
+      top: 30px;
+      left: 30px;
+      z-index: 1;
+    }
+
+    .bluetooth {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      z-index: 2;
+    }
+
+    .ative-o-bluetooth-do-seu-celular-e-aproxime-sua-pulseira-senz-para-conectar {
+      color: rgba(51, 73, 84, 0.63);
+      font-size: 1.2rem;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 80px;
+      max-width: 90%;
+    }
+
+    .rectangle-1 {
+      background: #f9f9f9;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 300px;
+      height: 39px;
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      padding-left: 16px;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), inset 0 4px 4px rgba(211, 211, 211, 0.02);
+      position: relative;
+    }
+
+    .senz-01 {
+      color: #000;
+      font-family: "Itim-Regular", sans-serif;
+      font-size: 1rem;
+      opacity: 0.56;
+    }
+
+    .chevron-right {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+    }
+
+    .rectangle-12 {
+      background: #609ebf;
+      border-radius: 100px;
+      width: 90%;
+      max-width: 260px;
+      height: 36px;
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .conectar {
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      user-select: none;
+    }
+
+    .problemas-para-conectar,
+    .clique-aqui {
+      color: rgba(51, 73, 84, 0.63);
+      font-size: 1rem;
+      text-align: center;
+      margin-top: 24px;
+      user-select: none;
+    }
+
+    .clique-aqui {
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Responsividade */
+    @media (max-width: 375px) {
+      .conecte-sua-pulseira {
+        font-size: 1.5rem;
+      }
+
+      .ative-o-bluetooth-do-seu-celular-e-aproxime-sua-pulseira-senz-para-conectar {
+        font-size: 1rem;
+      }
+
+      .rectangle-12 {
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="tela-conectar-bonita-9">
+    <div class="conecte-sua-pulseira">Conecte sua pulseira</div>
+
+    <div class="bluetooth-container">
+      <div class="ellipse-2"></div>
+      <div class="ellipse-1"></div>
+      <img class="bluetooth" src="Bluetooth.png" alt="Ícone Bluetooth" />
+    </div>
+
+    <div class="ative-o-bluetooth-do-seu-celular-e-aproxime-sua-pulseira-senz-para-conectar">
+      Ative o bluetooth do seu celular e aproxime sua pulseira SENZ para conectar
+    </div>
+
+    <div class="rectangle-1">
+      <div class="senz-01">SENZ-01</div>
+      <img class="chevron-right" src="Chevron right.png" alt="Seta para conectar" />
+    </div>
+
+    <div class="rectangle-12">
+      <div class="conectar">Conectar</div>
+    </div>
+
+    <div class="problemas-para-conectar">Problemas para conectar?</div>
+    <div class="clique-aqui">Clique aqui</div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cliqueAqui = document.querySelector('.clique-aqui');
+      const conectarBtn = document.querySelector('.rectangle-12');
+
+      cliqueAqui.addEventListener('click', () => {
+        alert('Em andamento');
+      });
+
+      conectarBtn.addEventListener('click', () => {
+        // Redireciona para a página conectado.html
+        window.location.href = 'conectado.html';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SENZ - Tela Inicial</title>
+  <style>
+    :root {
+      --azul-principal: #05285C;
+      --azul-circulo: #3866A9;
+      --azul-leve: #e7f3fa;
+      --verde-senz: #23bcb0;
+      --azul-btn: #79c3e6;
+      --cinza-bg: #f8fafb;
+      --cinza-card: #fff;
+      --cinza-desc: #6c7b8a;
+      --cinza-borda: #e3e7ed;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Arial", sans-serif;}
+    body {
+      background: var(--cinza-bg);
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    .container {
+      width: 100vw;
+      min-height: 100vh;
+      max-width: 410px;
+      margin: 0 auto;
+      background: var(--cinza-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding-bottom: 110px; /* Espaço para dock flutuante */
+    }
+    .senz-logo {
+      color: var(--verde-senz);
+      font-weight: bold;
+      font-size: 1.54rem;
+      text-align: center;
+      letter-spacing: 2px;
+      margin-top: 22px;
+      margin-bottom: 11px;
+    }
+    .saudacao-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 18px 0 18px;
+      margin-bottom: 7px;
+      margin-top: 0;
+    }
+    .saudacao-txt {
+      color: var(--azul-principal);
+      font-size: 1.08rem;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    .user-circle {
+      background: #f3f7fb;
+      color: #b4bed3;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold;
+      font-size: 1.22rem;
+      margin-left: 6px;
+      border: 1.3px solid #e3e7ed;
+    }
+    .sugestao-card {
+      width: calc(100% - 30px);
+      max-width: 370px;
+      margin: 0 auto 18px auto;
+      background: #f7fbff;
+      border-radius: 15px;
+      box-shadow: 0 1.5px 10px #e2eaf7;
+      padding: 16px 14px 12px 14px;
+      text-align: center;
+      font-size: 1rem;
+      color: var(--azul-principal);
+      margin-top: 6px;
+      position: relative;
+    }
+    .sugestao-card .sug-txt {
+      color: #425c73;
+      font-size: 0.96rem;
+      margin-bottom: 7px;
+      display: block;
+      font-weight: 400;
+    }
+    .sugestao-card .sug-btn {
+      background: var(--azul-btn);
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+      padding: 7px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: background 0.18s;
+      box-shadow: 0 2px 7px #d0e7fa;
+    }
+    .sugestao-card .sug-btn:hover {
+      background: #5ab0e0;
+    }
+    .cards {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 7px;
+      margin-bottom: 19px;
+      padding: 0 11px;
+    }
+    .card-box {
+      background: var(--cinza-card);
+      border-radius: 15px;
+      box-shadow: 0 2.5px 14px #e1e6f5;
+      padding: 15px 17px 11px 17px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      min-height: 70px;
+    }
+    .card-icon {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 13px;
+      background: #eaf1fb;
+      margin-right: 0px;
+      font-size: 1.9rem;
+      flex-shrink: 0;
+    }
+    .card-icon.heart { background: #ffe9e8;}
+    .card-icon.galvanic { background: #eaf9fd;}
+    .card-icon.mental { background: #edeafd;}
+    .card-info { display: flex; flex-direction: column; flex: 1; }
+    .card-info .card-title {
+      color: var(--azul-principal);
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.5px;
+    }
+    .card-info .card-dado {
+      color: #222;
+      font-size: 1.14rem;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .card-info .card-status {
+      color: #18c290;
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+    .card-info .card-status.elevado { color: #e89e3c; }
+    .card-info .card-status.normal { color: #23bcb0; }
+    .card-info .card-status.estavel { color: #52a1ee; }
+    .card-info .ult-ex {
+      color: #6d7ba5;
+      font-size: 0.96rem;
+      font-weight: 400;
+      margin-top: 3px;
+    }
+    /* Chatbot */
+    .chatbot-fab {
+      position: fixed;
+      right: 18px;
+      bottom: 112px;  /* deixa acima do dock */
+      background: #e7f4ff;
+      box-shadow: 0 2.5px 14px #c6d7f6;
+      border-radius: 20px 20px 20px 5px;
+      padding: 7px 13px;
+      font-size: 0.93rem;
+      color: #08294d;
+      z-index: 1500;
+      min-width: 70px;
+      max-width: 210px;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      border: 1.1px solid #d0e5f7;
+      word-break: break-word;
+    }
+    .chatbot-fab .chatbot-bot {
+      background: #3866A9;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.19rem; margin-left: 3px;
+      box-shadow: 0 1.5px 7px #b4d4fd;
+    }
+    /* Dock flutuante centralizado */
+    .espaco-rodape { height: 90px; }
+    .dock-flutuante {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 22px;
+      background: #fff;
+      box-shadow: 0 8px 32px rgba(5,40,92,0.13), 0 1.5px 8px rgba(48,54,80,0.11);
+      border-radius: 28px;
+      padding: 12px 28px;
+      display: flex;
+      gap: 32px;
+      z-index: 1100;
+      min-width: 240px;
+      max-width: 96vw;
+    }
+    .dock-flutuante .dock-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #e9eef9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.17s, transform 0.18s;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-size: 1.35rem;
+    }
+    .dock-flutuante .dock-icon.active,
+    .dock-flutuante .dock-icon:hover {
+      background: var(--azul-circulo);
+      color: #fff;
+      transform: scale(1.07);
+    }
+    .dock-flutuante .dock-icon svg {
+      width: 24px; height: 24px; fill: var(--azul-principal); transition: fill 0.18s;}
+    .dock-flutuante .dock-icon.active svg,
+    .dock-flutuante .dock-icon:hover svg { fill: #fff; }
+    @media (max-width: 480px) {
+      .container { padding-bottom: 87px;}
+      .cards { padding: 0 2px;}
+      .espaco-rodape { height: 60px;}
+      .dock-flutuante { padding: 7px 9px; border-radius: 15px; gap: 9px; bottom: 7px;}
+      .dock-flutuante .dock-icon { width: 31px; height: 31px;}
+      .dock-flutuante .dock-icon svg { width: 17px; height: 17px;}
+      .chatbot-fab { right: 5px; bottom: 67px; font-size: 0.8rem; border-radius: 13px; max-width: 120px;}
+      .chatbot-fab .chatbot-bot { width: 18px; height: 18px; font-size: 0.9rem;}
+    }
+    @media (max-width: 400px) {
+      .dock-flutuante { padding: 2px 1px; border-radius: 8px; gap: 7px;}
+      .dock-flutuante .dock-icon { width: 21px; height: 21px; font-size: 0.91rem;}
+      .dock-flutuante .dock-icon svg { width: 10px; height: 10px;}
+      .espaco-rodape { height: 32px;}
+    }
+  </style>
+  <script>
+    function setActive(el) {
+      document.querySelectorAll('.dock-flutuante .dock-icon').forEach(icon => {
+        icon.classList.remove('active');
+      });
+      el.classList.add('active');
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="senz-logo">SENZ</div>
+    <div class="saudacao-row">
+      <span class="saudacao-txt">Bem vindo(a) de volta,<br>Danilo</span>
+      <div class="user-circle">D</div>
+    </div>
+    <div class="sugestao-card">
+      <span class="sug-txt">
+        Parece que sua resposta galvânica aumentou.<br>
+        Que tal uma respiração guiada agora?
+      </span>
+      <button class="sug-btn">Iniciar Exercício</button>
+    </div>
+    <div class="cards">
+      <!-- Card Frequência Cardíaca -->
+      <div class="card-box">
+        <div class="card-icon heart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path fill="#ef7f80" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <div class="card-info">
+          <span class="card-title">Frequência Cardíaca</span>
+          <span class="card-dado">78 bpm</span>
+          <span class="card-status estavel">Estável</span>
+        </div>
+      </div>
+      <!-- Card Galvânica -->
+      <div class="card-box">
+        <div class="card-icon galvanic">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <path fill="#79c3e6" d="M16 2C8.268 2 2 8.268 2 16c0 7.733 6.268 14 14 14s14-6.267 14-14C30 8.268 23.732 2 16 2zm0 26C9.373 28 4 22.627 4 16S9.373 4 16 4s12 5.373 12 12-5.373 12-12 12z"/>
+            <circle fill="#79c3e6" cx="16" cy="16" r="5"/>
+          </svg>
+        </div>
+        <div class="card-info">
+          <span class="card-title">Atividade Galvânica (EDA)</span>
+          <span class="card-dado">0.4 μS</span>
+          <span class="card-status elevado">Elevado</span>
+        </div>
+      </div>
+      <!-- Card Exercícios Mentais -->
+      <div class="card-box">
+        <div class="card-icon mental">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <ellipse fill="#9677ef" cx="16" cy="16" rx="13" ry="12"/>
+            <ellipse fill="#b7a6e6" cx="16" cy="16" rx="7" ry="6.5"/>
+          </svg>
+        </div>
+        <div class="card-info">
+          <span class="card-title">Exercícios Mentais</span>
+          <span class="ult-ex">Último exercício: Respiração Box (Quadrada)</span>
+        </div>
+      </div>
+    </div>
+    <!-- Chatbot Flutuante (robozinho sempre visível) -->
+    <div class="chatbot-fab">
+      <span>Oi, pronto para ajudar!<br>Posso dar dicas ou explicar funções do app. Precisa de algo?</span>
+      <div class="chatbot-bot">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="11" fill="#3866A9"/>
+          <circle cx="12" cy="13" r="4.5" fill="#e7f3fa"/>
+          <ellipse cx="12" cy="18" rx="2" ry="0.7" fill="#3866A9"/>
+        </svg>
+      </div>
+    </div>
+    <div class="espaco-rodape"></div>
+  </div>
+  <!-- DOCK FLUTUANTE CENTRALIZADO -->
+  <nav class="dock-flutuante">
+    <button class="dock-icon active" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <polygon points="6,19 18,12 6,5" />
+      </svg>
+    </button>
+    <button class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </button>
+    <button class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <rect x="8" y="4" width="8" height="16" rx="4"/>
+      </svg>
+    </button>
+    <button class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+    </button>
+    <button class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"/>
+      </svg>
+    </button>
+  </nav>
+</body>
+</html>
