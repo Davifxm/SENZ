@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Histórico Emocional</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --azul-principal: #05285C;
+      --azul-circulo: #3866A9;
+      --cinza-bg: #fff;
+      --azul-leve: #e6f0fa;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100vh;
+      width: 100vw;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: hidden;
+    }
+    body {
+      width: 100vw;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      padding-top: 20px;
+      padding-bottom: 100px;
+      min-height: 100vh;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 1.1rem;
+      margin-bottom: 2px;
+      min-height: 42px;
+      box-sizing: border-box;
+    }
+    .back-arrow, .calendar-icon {
+      font-size: 25px;
+      color: #24364d;
+      cursor: pointer;
+      min-width: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px;
+    }
+    .header-title {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.35em;
+      color: #24364d;
+      line-height: 1.3;
+      min-width: 0;
+    }
+    .date {
+      font-size: 1em;
+      color: #7a8da8;
+      margin-bottom: 13px;
+      text-align: center;
+      width: 100%;
+      letter-spacing: 0.01em;
+    }
+    .chart-area {
+      width: 95%;
+      max-width: 320px;
+      background: #f4f8fe;
+      border-radius: 12px;
+      padding: 12px 10px 8px 10px;
+      margin: 0 auto 16px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .chart-area img {
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      border-radius: 6px;
+      background: #fff;
+      display: block;
+    }
+    .chart-hours {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 260px;
+      font-size: 0.81em;
+      color: #a9b5c7;
+      margin-top: 7px;
+      letter-spacing: 0.01em;
+    }
+    .summary {
+      font-size: 1em;
+      color: #24364d;
+      margin: 0 0 14px 0;
+      text-align: center;
+      width: 95%;
+      line-height: 1.5;
+      max-width: 350px;
+    }
+    .suggestions {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 18px;
+      width: 95%;
+      max-width: 370px;
+    }
+    .suggestion {
+      background: var(--azul-leve);
+      color: #24364d;
+      font-size: 0.98em;
+      border-radius: 7px;
+      padding: 10px 12px;
+      line-height: 1.5;
+      box-sizing: border-box;
+      word-break: break-word;
+    }
+    .interventions {
+      width: 95%;
+      max-width: 370px;
+      margin: 0 auto;
+    }
+    .interventions-title {
+      font-weight: bold;
+      color: #24364d;
+      font-size: 1.08em;
+      margin-bottom: 3px;
+      margin-top: 12px;
+    }
+    .interventions-subtitle {
+      color: #7a8da8;
+      font-size: 0.96em;
+      margin-bottom: 6px;
+    }
+    .intervention-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.99em;
+      background: #f9fcff;
+      border-radius: 9px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .intervention-table th,
+    .intervention-table td {
+      text-align: center;
+      padding: 7px 2px;
+      vertical-align: middle;
+      border: none;
+    }
+    .intervention-table .left {
+      text-align: left;
+      padding-left: 7px;
+      font-weight: 500;
+      color: #24364d;
+      min-width: 90px;
+      width: 40%;
+    }
+    .intervention-table .time {
+      color: #7a8da8;
+      min-width: 55px;
+    }
+    .intervention-table .emoji {
+      font-size: 20px;
+      margin: 0 1px;
+    }
+    .intervention-table .icon {
+      font-size: 18px;
+      color: #7a8da8;
+      vertical-align: middle;
+      margin-right: 2px;
+    }
+
+    /* Rodapé Dock */
+    .dock {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 26px;
+      background: #f7f7f7;
+      padding: 15px 30px;
+      border-radius: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      z-index: 999;
+      flex-wrap: wrap;
+    }
+    .dock-icon {
+      width: 44px; height: 44px; border-radius: 50%; background: #e3e3e3;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.3s; cursor: pointer;
+    }
+    .dock-icon:hover { transform: scale(1.14);}
+    .dock-icon.active { background: #3866A9;}
+    .dock-icon svg { width: 24px; height: 24px; fill: #05285c;}
+    .dock-icon.active svg { fill: #fff;}
+
+    /* Responsivo para tablets e celulares */
+    @media (max-width: 900px) {
+      .container { max-width: 98vw; }
+      .chart-area, .suggestions, .interventions { max-width: 99vw;}
+      .dock { gap: 13px; padding: 11px 13px; border-radius: 19px;}
+      .dock-icon { width: 38px; height: 38px;}
+      .dock-icon svg { width: 19px; height: 19px;}
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding-top: 12px;
+        padding-bottom: 77px;
+        max-width: 100vw;
+      }
+      .chart-area, .suggestions, .interventions { max-width: 99vw;}
+      .summary { font-size: 0.99em;}
+      .intervention-table th, .intervention-table td { font-size: 0.90em; padding: 4px 1px;}
+      .dock { gap: 7px; padding: 8px 8px; border-radius: 13px;}
+      .dock-icon { width: 28px; height: 28px;}
+      .dock-icon svg { width: 13px; height: 13px;}
+    }
+    @media (max-width: 390px) {
+      .header-title { font-size: 1em;}
+      .intervention-table th, .intervention-table td { font-size: 0.81em; padding: 2px 0;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="material-icons back-arrow">arrow_back</span>
+      <span class="header-title">Histórico Emocional</span>
+      <span class="material-icons calendar-icon">calendar_today</span>
+    </div>
+    <div class="date">29 de junho</div>
+    <div class="chart-area">
+      <img src="graficoemocional.png" alt="Gráfico de Níveis de Estresse" />
+      <div class="chart-hours">
+        <span>2h</span><span>4h</span><span>8h</span><span>11h</span><span>24h</span>
+      </div>
+    </div>
+    <div class="summary">
+      Hoje seus níveis de estresse variaram entre leve e moderado. Picos ocorreram às 07:09.
+    </div>
+    <div class="suggestions">
+      <div class="suggestion">Você dormiu pouco ontem?<br>Seu HRV caiu 25%.</div>
+      <div class="suggestion">Tente repetir a meditação que funcionou bem na segunda-feira.</div>
+      <div class="suggestion">Seu estresse subiu um pouco.<br>Que tal uma pausa para respirar?</div>
+    </div>
+    <div class="interventions">
+      <div class="interventions-title">Registro de Intervenções</div>
+      <div class="interventions-subtitle">Respiração</div>
+      <table class="intervention-table">
+        <tr>
+          <th class="left"></th>
+          <th class="time"></th>
+          <th>Antes</th>
+          <th>Depois</th>
+        </tr>
+        <tr>
+          <td class="left"><span class="material-icons icon">waves</span>Respiração</td>
+          <td class="time">10:20</td>
+          <td><span class="emoji">😞</span> <span class="emoji">😟</span></td>
+          <td><span class="emoji">🙂</span> <span class="emoji">😃</span></td>
+        </tr>
+        <tr>
+          <td class="left"><span class="material-icons icon">music_note</span>Música</td>
+          <td class="time">15:00</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    <!-- Rodapé Dock -->
+    <div class="dock">
+      <!-- Ícone Casa -->
+      <div class="dock-icon" onclick="setActive(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </div>
+      <!-- Ícone Frequência Cardíaca -->
+      <div class="dock-icon" onclick="setActive(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 
+          12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 
+          3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 
+          16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 
+          6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+      <!-- Histórico Emocional ativo -->
+      <div class="dock-icon active" onclick="setActive(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 
+            12s4.48 10 10 10 10-4.48 10-10S17.52 
+            2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 
+            8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/>
+        </svg>
+      </div>
+      <!-- Ícone de Gráficos -->
+      <div class="dock-icon" onclick="setActive(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M3 17h2v-7H3v7zm4 
+            0h2V7H7v10zm4 0h2v-4h-2v4zm4 
+            0h2V4h-2v13zm4 0h2v-9h-2v9z"/>
+        </svg>
+      </div>
+      <!-- Ícone Perfil -->
+      <div class="dock-icon" onclick="setActive(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 
+            1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 
+            1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script>
+    function setActive(el) {
+      document.querySelectorAll('.dock-icon').forEach(icon => {
+        icon.classList.remove('active');
+      });
+      el.classList.add('active');
+    }
+  </script>
+</body>
+</html>

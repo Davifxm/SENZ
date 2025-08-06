@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .tela-7 {
+      background: #ffffff;
+      max-width: 430px;
+      width: 100%;
+      min-height: 80vh;
+      padding: 20px 30px 40px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .fa-a-o-login {
+      color: #38657d;
+      font-family: "Inter-SemiBold", sans-serif;
+      font-size: 32px;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 30px;
+      align-self: center;
+    }
+
+    .logo-img {
+      width: 216px;
+      max-width: 90vw;
+      height: auto;
+      object-fit: contain;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-family: "IstokWeb-Regular", sans-serif;
+      font-size: 15px;
+      color: #bebebe;
+      margin-bottom: 6px;
+      display: block;
+      width: 100%;
+      max-width: 350px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      max-width: 350px;
+      height: 36px;
+      border: 1px solid rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      padding: 0 12px;
+      font-size: 15px;
+      margin-bottom: 20px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #38657d;
+    }
+
+    .rectangle-12 {
+      background: #609ebf;
+      border-radius: 100px;
+      width: 260px;
+      max-width: 90vw;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin: 30px auto 20px;
+      box-shadow: 0 4px 8px rgba(96, 158, 191, 0.5);
+      transition: background-color 0.3s ease;
+    }
+
+    .rectangle-12:hover {
+      background-color: #4a7ca6;
+    }
+
+    .fazer-login {
+      color: #ffffff;
+      font-family: "IstokWeb-Bold", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .acesso-r-pido {
+  color: #38657d;
+  font-family: "IstokWeb-Regular", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  text-align: center;         /* Centraliza o texto */
+  width: 100%;                /* Garante que o text-align funcione corretamente */
+}
+
+.acesso-rapido-container {
+  display: flex;
+  justify-content: center;    /* Centraliza os círculos */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 350px;
+  width: 100%;
+  margin: 0 auto;             /* Centraliza o container em telas maiores */
+}
+
+
+    
+
+    @media (max-width: 400px) {
+      .fa-a-o-login {
+        font-size: 26px;
+      }
+      .acesso-r-pido {
+        font-size: 14px;
+      }
+      .rectangle-12 {
+        width: 100%;
+      }
+      input {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="tela-7">
+    <img
+      class="logo-img"
+      src="WhatsApp_Image_2025-06-23_at_18.08.21-removebg-preview 2.png"
+      alt="Logo SENZ"
+    />
+
+    <div class="fa-a-o-login">Faça o login</div>
+
+    <input type="email" id="email" name="email" placeholder="Digite seu e-mail" />
+
+    <input type="password" id="senha" name="senha" placeholder="Digite sua senha" />
+
+    <div class="rectangle-12" id="btn-login">
+      <div class="fazer-login">Fazer login</div>
+    </div>
+
+    <div class="acesso-r-pido"> ------------ Acesso rápido ------------</div>
+
+    <div class="acesso-rapido-container">
+      <div class="circle" tabindex="0"><img src="image 1.png" alt="Acesso 1" /></div>
+      <div class="circle" tabindex="0"><img src="image 2.png" alt="Acesso 2" /></div>
+      <div class="circle" tabindex="0"><img src="image 3.png" alt="Acesso 3" /></div>
+      <div class="circle" tabindex="0"><img src="image 4.png" alt="Acesso 4" /></div>
+    </div>
+  </div>
+
+  <script>
+    // Alerta "Em andamento" ao clicar nas imagens de acesso rápido
+    document.querySelectorAll('.circle').forEach(circle => {
+      circle.addEventListener('click', () => {
+        alert('Em andamento');
+      });
+
+      circle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          alert('Em andamento');
+        }
+      });
+    });
+
+    // Evento de clique do botão de login
+    document.getElementById('btn-login').addEventListener('click', () => {
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      if (email && senha) {
+        alert('Login realizado (simulado)');
+        // Aqui você pode redirecionar ou validar login
+      } else {
+        alert('Preencha o e-mail e a senha');
+      }
+    });
+  </script>
+</body>
+</html>
