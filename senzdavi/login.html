@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login</title>
   <style>
+    /* estilos iguais ao que você mandou */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: "Segoe UI", sans-serif;
     }
-
     body {
       background-color: white;
       display: flex;
@@ -20,7 +20,6 @@
       min-height: 100vh;
       padding: 20px;
     }
-
     .container {
       width: 100%;
       max-width: 420px;
@@ -29,31 +28,26 @@
       flex-direction: column;
       align-items: center;
     }
-
     .container img.logo-img {
       width: 120px;
       margin-bottom: 16px;
     }
-
     p {
       color: #3a3a3a;
       font-size: 16px;
       margin-bottom: 24px;
     }
-
     .social-icons {
       display: flex;
       justify-content: center;
       gap: 16px;
       margin-bottom: 20px;
     }
-
     .social-icons img {
       width: 32px;
       height: 32px;
       cursor: pointer;
     }
-
     .divider {
       display: flex;
       align-items: center;
@@ -62,7 +56,6 @@
       color: #888;
       width: 100%;
     }
-
     .divider::before,
     .divider::after {
       content: "";
@@ -70,15 +63,12 @@
       height: 1px;
       background: #ccc;
     }
-
     .divider::before {
       margin-right: 8px;
     }
-
     .divider::after {
       margin-left: 8px;
     }
-
     input {
       width: 100%;
       padding: 12px;
@@ -87,7 +77,6 @@
       border-radius: 6px;
       font-size: 14px;
     }
-
     button {
       width: 90%;
       max-width: 320px;
@@ -100,22 +89,14 @@
       cursor: pointer;
       margin-top: 10px;
     }
-
     .footer {
       font-size: 12px;
       color: #666;
       margin-top: 16px;
     }
-
     .footer a {
       color: #3a6ea5;
       text-decoration: none;
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 0 10px;
-      }
     }
   </style>
 </head>
@@ -125,31 +106,75 @@
     <p>Seu bem-estar começa aqui. Faça o login.</p>
     
     <div class="social-icons">
-      <img class="social-icon" src="image-removebg-preview.png" alt="Google" />
+      <img id="google-login" class="social-icon" src="image-removebg-preview.png" alt="Google" />
       <img class="social-icon" src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="Facebook" />
       <img class="social-icon" src="https://img.icons8.com/ios-filled/50/000000/mac-os.png" alt="Apple" />
       <img class="social-icon" src="https://img.icons8.com/ios-filled/50/000000/windows8.png" alt="Windows" />
     </div>
 
-    <!-- Divider adicionado -->
     <div class="divider">ou</div>
 
-    <input type="email" placeholder="e-mail" />
-    <input type="password" placeholder="senha" />
-    <button>Fazer Login</button>
+    <input id="email" type="email" placeholder="e-mail" />
+    <input id="password" type="password" placeholder="senha" />
+    <button id="login-btn">Fazer Login</button>
+
+    <div class="footer">
+      Ao entrar, você aceita nossos
+      <a href="termouso.html" target="_blank">Termos de Uso</a> e 
+      <a href="politica.html" target="_blank">Política de Privacidade</a>.
+    </div>
   </div>
 
-  <script>
-    // Alerta "Em andamento" ao clicar nos ícones sociais
-    document.querySelectorAll('.social-icon').forEach(icon => {
-      icon.addEventListener('click', () => {
-        alert('Em andamento');
-      });
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // Firebase import
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-      icon.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          alert('Em andamento');
+    // TODO: Substitua pela sua config do Firebase
+    const firebaseConfig = {
+            apiKey: "AIzaSyBOqDbKnGTkP-35Hjsga8hnPQFqQRp7AME",
+            authDomain: "senz-bae74.firebaseapp.com",
+            projectId: "senz-bae74",
+            storageBucket: "senz-bae74.appspot.com",
+            messagingSenderId: "604865943153",
+            appId: "1:604865943153:web:b17d947e686a5becc4add0",
+            measurementId: "G-3GNNQWFVGH"
+        };
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Login com e-mail e senha
+    document.getElementById("login-btn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "eda.html";
+      } catch (error) {
+        alert("Erro ao fazer login: " + error.message);
+      }
+    });
+
+    // Login com Google
+    document.getElementById("google-login").addEventListener("click", async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+        window.location.href = "eda.html";
+      } catch (error) {
+        alert("Erro ao fazer login com Google: " + error.message);
+      }
+    });
+
+    // Ícones extras (Facebook, Apple, Microsoft): ainda não implementado
+    document.querySelectorAll('.social-icon').forEach(icon => {
+      icon.addEventListener('click', (e) => {
+        if (!e.target.id.includes("google")) {
+          alert('Em breve');
         }
       });
     });
