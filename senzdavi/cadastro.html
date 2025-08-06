@@ -125,9 +125,9 @@
     <img class="avatar" src="cadastro.menina.png" alt="Avatar">
     <h1>Comece grátis</h1>
     <p>Seu bem-estar começa aqui. Cadastre-se gratuitamente e explore o SENZ.</p>
-    
+
     <div class="social-icons">
-      <img src="https://img.icons8.com/color/48/google-logo.png" alt="Google" />
+      <img src="https://img.icons8.com/color/48/google-logo.png" alt="Google" id="google-login" />
       <img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="Facebook" />
       <img src="https://img.icons8.com/ios-filled/50/000000/mac-os.png" alt="Apple" />
       <img src="https://img.icons8.com/ios-filled/50/000000/windows8.png" alt="Windows" />
@@ -135,16 +135,59 @@
 
     <div class="divider">ou</div>
 
-    <input type="text" placeholder="nome completo" />
-    <input type="email" placeholder="e-mail" />
-    <input type="tel" placeholder="telefone" />
-    <input type="password" placeholder="senha" />
-    <button>criar conta</button>
+    <input type="text" id="nome" placeholder="nome completo" />
+    <input type="email" id="email" placeholder="e-mail" />
+    <input type="tel" id="telefone" placeholder="telefone" />
+    <input type="password" id="senha" placeholder="senha" />
+    <button id="criarConta">criar conta</button>
 
     <p class="footer">
       Ao criar uma conta, você concorda com nossos
-      <a href="#">termos de uso</a> e <a href="#">política de privacidade</a>
+      <a href="termouso.html">termos de uso</a> e <a href="politica.html">política de privacidade</a>
     </p>
   </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+            apiKey: "AIzaSyBOqDbKnGTkP-35Hjsga8hnPQFqQRp7AME",
+            authDomain: "senz-bae74.firebaseapp.com",
+            projectId: "senz-bae74",
+            storageBucket: "senz-bae74.appspot.com",
+            messagingSenderId: "604865943153",
+            appId: "1:604865943153:web:b17d947e686a5becc4add0",
+            measurementId: "G-3GNNQWFVGH"
+        };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+
+    document.getElementById("criarConta").addEventListener("click", () => {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+
+      createUserWithEmailAndPassword(auth, email, senha)
+        .then(() => {
+          window.location.href = "eda.html";
+        })
+        .catch(error => {
+          alert("Erro ao criar conta: " + error.message);
+        });
+    });
+
+    document.getElementById("google-login").addEventListener("click", () => {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then(() => {
+          window.location.href = "eda.html";
+        })
+        .catch(error => {
+          alert("Erro no login com Google: " + error.message);
+        });
+    });
+  </script>
 </body>
 </html>
+  
