@@ -1,0 +1,142 @@
+#include <WiFi.h>
+#include <WiFiManager.h> // Biblioteca para gerenciar a conexão Wi-Fi de forma fácil
+#include <HTTPClient.h>
+#include <PulseSensorPlayground.h>
+#include <Preferences.h>
+
+#define PULSE_PIN 4
+#define THRESHOLD 550
+
+// Firebase
+String firebaseHost = "https://senz-bae74-default-rtdb.firebaseio.com/";
+String firebaseAuth = "eGvu0jhnP7YMRVnuj4jGKxXmpq4fVW6x087THsVq";
+
+// Variáveis para armazenar o UID do Firebase
+String userId = "";
+
+PulseSensorPlayground pulseSensor;
+
+// Objeto para acesso à memória flash (EEPROM virtual)
+Preferences preferences;
+
+// Callback para salvar o UID do Firebase
+void saveConfigCallback() {
+  preferences.begin("senz_app", false);
+  preferences.putString("userId", userId);
+  preferences.end();
+}
+
+void enviarParaFirebase(int bpm) {
+  if (WiFi.status() != WL_CONNECTED || userId == "") {
+    return;
+  }
+
+  HTTPClient http;
+  String url = firebaseHost + "/users/" + userId + "/batimentos.json?auth=" + firebaseAuth;
+  String json = "{\"bpm\":" + String(bpm) + ", \"timestamp\":" + String(millis()) + "}";
+
+  http.begin(url);
+  http.addHeader("Content-Type", "application/json");
+  int httpCode = http.POST(json);
+
+  if (httpCode > 0) {
+    Serial.println("📤 BPM enviado ao Firebase: " + String(bpm));
+  } else {
+    Serial.println("❌ Erro ao enviar ao Firebase: " + String(httpCode) + ", " + http.errorToString(httpCode));
+  }
+  http.end();
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  // Inicia o sensor de pulso
+  pulseSensor.analogInput(PULSE_PIN);
+  pulseSensor.setThreshold(THRESHOLD);
+  if (pulseSensor.begin()) {
+    Serial.println("🩺 PulseSensor iniciado.");
+  } else {
+    Serial.println("❌ Erro no PulseSensor.");
+  }
+
+  // Carrega o UID salvo da memória flash
+  preferences.begin("senz_app", false);
+  userId = preferences.getString("userId", "");
+  preferences.end();
+
+  // Se não houver UID, entra em modo de configuração
+  if (userId == "") {
+    Serial.println("⚠️ UID não encontrado. Entrando em modo de configuração Wi-Fi...");
+    
+    // Configura o WiFiManager
+    WiFiManager wm;
+    wm.setSaveConfigCallback(saveConfigCallback); // Chama o callback para salvar o UID
+
+    // Define um campo de texto personalizado para o UID do Firebase
+    WiFiManagerParameter custom_uid_param("userId", "UID Firebase", "", 40);
+    wm.addParameter(&custom_uid_param);
+
+    // Inicia o portal de configuração
+    // Isso cria um Access Point chamado "Senz-Config"
+    // e abre uma página de configuração em 192.168.4.1
+    if (!wm.autoConnect("Senz-Config", "senha123")) {
+      Serial.println("❌ Falha ao conectar. Reiniciando...");
+      delay(3000);
+      ESP.restart();
+    }
+    
+    // Se a configuração foi bem-sucedida, salva o UID do campo personalizado
+    userId = custom_uid_param.getValue();
+    saveConfigCallback();
+    
+    Serial.println("✅ Configuração concluída. Reiniciando para conectar...");
+    delay(1000);
+    ESP.restart();
+  }
+
+  // Se o UID existe, tenta conectar ao Wi-Fi salvo
+  Serial.println("✅ UID encontrado. Conectando ao Wi-Fi salvo...");
+  WiFi.begin(); // Tenta conectar usando as credenciais salvas pelo WiFiManager
+
+  int attempts = 0;
+  while (WiFi.status() != WL_CONNECTED && attempts < 20) {
+    Serial.print(".");
+    delay(500);
+    attempts++;
+  }
+  
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("\n✅ Conectado ao WiFi: " + WiFi.SSID());
+  } else {
+    Serial.println("\n❌ Falha ao conectar ao Wi-Fi. Entrando em modo de configuração...");
+    delay(3000);
+    ESP.restart();
+  }
+}
+
+unsigned long lastSend = 0;
+
+void loop() {
+  int bpm = pulseSensor.getBeatsPerMinute();
+
+  if (pulseSensor.sawStartOfBeat()) {
+    Serial.print("❤️ BPM: ");
+    Serial.println(bpm);
+    
+    // Envia o BPM para o Firebase a cada 5 segundos
+    if (millis() - lastSend > 5000) {
+      enviarParaFirebase(bpm);
+      lastSend = millis();
+    }
+  }
+
+  // Verifica a conexão Wi-Fi periodicamente
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("⚠️ Conexão Wi-Fi perdida. Tentando reconectar...");
+    WiFi.reconnect();
+    delay(5000); 
+  }
+  
+  delay(10);
+}
