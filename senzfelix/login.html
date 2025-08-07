@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+
+  <!-- Firebase v8 (compatível com firebase global) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container img.logo-img {
+      width: 120px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: #3a3a3a;
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .social-icons img {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #888;
+      width: 100%;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #ccc;
+    }
+
+    .divider::before {
+      margin-right: 8px;
+    }
+
+    .divider::after {
+      margin-left: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 90%;
+      max-width: 320px;
+      padding: 12px;
+      background-color: #0C326C;
+      color: white;
+      border: none;
+      border-radius: 24px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .footer {
+      font-size: 12px;
+      color: #666;
+      margin-top: 16px;
+    }
+
+    .footer a {
+      color: #3a6ea5;
+      text-decoration: none;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="logo-img" src="SENZ.png" alt="Logo SENZ" />
+    <p>Seu bem-estar começa aqui. Faça o login.</p>
+
+    <div class="social-icons">
+      <img id="btnGoogle" class="social-icon" src="image-removebg-preview.png" alt="Google" title="Login com Google" />
+      <img class="social-icon" src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="Facebook" />
+      <img class="social-icon" src="https://img.icons8.com/ios-filled/50/000000/mac-os.png" alt="Apple" />
+      <img class="social-icon" src="https://img.icons8.com/ios-filled/50/000000/windows8.png" alt="Windows" />
+    </div>
+
+    <div class="divider">ou</div>
+
+    <input id="email" type="email" placeholder="e-mail" />
+    <input id="senha" type="password" placeholder="senha" />
+    <button id="btnLogin">Fazer Login</button>
+
+    <p class="footer">
+      Ao fazer login, você concorda com nossos
+      <a href="termouso.html" target="_blank">termos de uso</a> e <a href="politica.html" target="_blank">política de privacidade</a>
+    </p>
+  </div>
+
+  <script>
+    // Sua configuração do Firebase (substitua pela sua)
+    var firebaseConfig = {
+      apiKey: "AIzaSyBOqDbKnGTkP-35Hjsga8hnPQFqQRp7AME",
+      authDomain: "senz-bae74.firebaseapp.com",
+      projectId: "senz-bae74",
+      storageBucket: "senz-bae74.appspot.com",
+      messagingSenderId: "604865943153",
+      appId: "1:604865943153:web:b17d947e686a5becc4add0",
+      measurementId: "G-3GNNQWFVGH"
+    };
+    // Inicializa Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Login com email e senha
+    document.getElementById('btnLogin').addEventListener('click', () => {
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      if (!email || !senha) {
+        alert('Preencha e-mail e senha.');
+        return;
+      }
+
+      auth.signInWithEmailAndPassword(email, senha)
+        .then(() => {
+          window.location.href = 'telainicial.html';
+        })
+        .catch((error) => {
+          alert('Erro no login: ' + error.message);
+        });
+    });
+
+    // Login com Google
+    document.getElementById('btnGoogle').addEventListener('click', () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(() => {
+          window.location.href = 'telainicial.html';
+        })
+        .catch((error) => {
+          alert('Erro no login com Google: ' + error.message);
+        });
+    });
+
+  </script>
+</body>
+</html>
