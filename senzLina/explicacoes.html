@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Explicações SENZ</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #ffffff;
+      color: #1b425a;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 360px;
+      width: 100%;
+      border-radius: 8px;
+      padding: 1.5rem 1.5rem 2rem;
+        text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen-wrapper {
+      position: relative;
+      height: 460px;
+    }
+
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      pointer-events: none;
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 0.7rem;
+    }
+
+    p.description {
+      font-size: 0.85rem;
+      color: #444;
+      margin-top: 0.8rem;
+      min-height: 60px;
+      padding: 0 1rem;
+    }
+
+    img {
+      max-width: 70%;
+      margin: 1rem auto 0;
+      display: block;
+    }
+
+    .pagination-dots {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #ccc;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .dot.active {
+      background-color: #1b425a;
+    }
+
+    .next-btn {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: #1b425a;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .next-btn:hover {
+      background-color: #13445b;
+    }
+
+    /* BOTÕES retangulares da tela final */
+    .final-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding: 0 1rem;
+    }
+
+    .final-options button {
+      padding: 0.9rem 1.2rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .final-options button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn {
+      background-color: #1b425a;
+      color: white;
+    }
+
+    .cadastro-btn {
+      background-color: #ffffff;
+      color: #1b425a;
+      border: 2px solid #1b425a;
+    }
+
+    @media (min-width: 600px) {
+      .container { max-width: 400px; padding: 2rem 2rem 3rem; }
+      h2 { font-size: 1.4rem; }
+      p.description { font-size: 0.9rem; min-height: 80px; }
+      .screen-wrapper { height: 500px; }
+    }
+
+    @media (min-width: 900px) {
+      .container { max-width: 450px; }
+      h2 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main" aria-label="Explicações SENZ">
+
+    <div class="screen-wrapper">
+      <!-- Tela 1 -->
+      <section class="screen active">
+        <h2>Sinta. SENZ percebe.</h2>
+        <img src="blu.jpeg" alt="Pessoa com pulseira SENZ meditando" />
+        <p class="description">Ela capta sinais do seu corpo, como batimentos e suor e entende quando algo muda nas suas emoções.</p>
+      </section>
+
+      <!-- Tela 2 -->
+      <section class="screen">
+        <h2>Ela fala com você. de verdade.</h2>
+        <img src="ex2.jpeg" alt="Mão segurando celular com aplicação SENZ" />
+        <p class="description">Quando você está sobrecarregado, a pulseira envia mensagens de apoio, exercícios de respiração ou meditação direto no app, no seu fone ou por vibrações sutis em sua pulseira.</p>
+      </section>
+
+      <!-- Tela 3 -->
+      <section class="screen">
+        <h2>Ajuda contínua, silenciosa e universal</h2>
+        <img src="ex3.jpeg" alt="Mundo e pulseira SENZ indicando ajuda global" />
+        <p class="description">Funciona 24h por dia, mesmo em silêncio. Os dados ajudam você e até sistemas de saúde a prevenirem crises antes que virem emergências.</p>
+      </section>
+
+      <!-- Tela Final -->
+      <section class="screen">
+        <h2>Bem-vindo ao SENZ!</h2>
+        <p class="description">Vamos começar o seu bem-estar emocional.</p>
+     <img src="logo.png" alt="" />
+        <div class="final-options">
+          <button class="login-btn" onclick="window.location.href='login.html'">Já possuo uma conta</button>
+          <button class="cadastro-btn" onclick="window.location.href='cadastro.html'">Quero me cadastrar</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Pontinhos -->
+    <div class="pagination-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Botão próximo -->
+    <button class="next-btn">Próximo</button>
+  </main>
+
+  <script>
+    const screens = document.querySelectorAll('.screen');
+    const dots = document.querySelectorAll('.dot');
+    const nextBtn = document.querySelector('.next-btn');
+    let currentIndex = 0;
+
+    function showScreen(index) {
+      screens.forEach((screen, i) => {
+        screen.classList.toggle('active', i === index);
+        dots[i].classList.toggle('active', i === index);
+      });
+
+      currentIndex = index;
+
+      // Esconde botão "Próximo" na última tela
+      if (currentIndex === screens.length - 1) {
+        nextBtn.style.display = 'none';
+      } else {
+        nextBtn.style.display = 'block';
+      }
+    }
+
+    function nextScreen() {
+      if (currentIndex < screens.length - 1) {
+        showScreen(currentIndex + 1);
+      }
+    }
+
+    nextBtn.addEventListener('click', nextScreen);
+
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => showScreen(idx));
+    });
+  </script>
+</body>
+</html>

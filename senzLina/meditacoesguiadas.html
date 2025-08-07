@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meditações Guiadas</title>
+  <style>
+    :root {
+      --azul-principal: #05285C;
+      --azul-circulo: #3866A9;
+      --cinza-bg: #f5f6fa;
+      --azul-leve: #d7e6fa;
+      --borda-card: #e3e7ed;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Arial", sans-serif;}
+    body {
+      background-color: var(--cinza-bg);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    /* Header centralizado */
+    .header-meditacao {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.1rem 1.2rem 0.5rem 1.2rem;
+      background: #fff;
+      border-bottom: 1px solid #e8eaf1;
+      z-index: 2;
+      position: relative;
+    }
+    .header-meditacao .back-arrow {
+      position: absolute;
+      left: 1.2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+    .header-meditacao h2 {
+      font-size: 1.25rem;
+      color: var(--azul-principal);
+      font-weight: bold;
+      text-align: center;
+      flex: 1;
+    }
+    .header-meditacao .top-img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-left: auto;
+      margin-right: 1.1rem;
+      border: 2px solid #d1e3fa;
+      background: #e6f0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width: 900px) {
+      .header-meditacao { padding: 0.8rem 0.7rem 0.3rem 0.7rem; }
+      .header-meditacao .back-arrow { left: 0.7rem;}
+      .header-meditacao .top-img { width: 28px; height: 28px; margin-right: 0.6rem; }
+    }
+    @media (max-width: 480px) {
+      .header-meditacao .top-img { width: 18px; height: 18px; margin-right: 0.4rem;}
+      .header-meditacao h2 { font-size: 1rem;}
+    }
+    .subtitulo {
+      font-size: 1rem;
+      color: #60709a;
+      margin: 0.2rem auto 1.1rem auto;
+      letter-spacing: 0.01em;
+      text-align: center;
+      width: 100%;
+      max-width: 700px;
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 0;
+    }
+    @media (min-width: 700px) {
+      .main-content { justify-content: center; }
+      .cards-lista { margin-top: 1.7rem; }
+    }
+    .cards-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 1.05rem;
+      padding: 0 1.3rem;
+      margin-bottom: 70px;
+      width: 100%;
+      max-width: 700px;
+    }
+    .card-meditacao {
+      background: #fff;
+      border: 1px solid var(--borda-card);
+      border-radius: 14px;
+      padding: 0.85rem 1.1rem 0.85rem 0.92rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.05rem;
+      box-shadow: 0 2px 8px 0 rgba(48,54,80,0.03);
+      transition: box-shadow 0.16s;
+      cursor: pointer;
+    }
+    .card-meditacao:hover { box-shadow: 0 4px 20px 0 rgba(48,54,80,0.07);}
+    .icon-card {
+      flex-shrink: 0;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .card-info { display: flex; flex-direction: column; gap: 2px; }
+    .card-titulo {
+      font-weight: bold; color: var(--azul-principal);
+      font-size: 1.01rem; margin-bottom: 1.5px;
+    }
+    .card-desc { font-size: 0.89rem; color: #586280; margin-bottom: 1px;}
+    .card-min { font-size: 0.81rem; color: #95a2be; margin-top: 2px;}
+
+    /* Dock padrão grandão IGUAL EDA e Intervenções */
+    .dock {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 36px;
+      background: #f7f7f7;
+      padding: 18px 36px;
+      border-radius: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      z-index: 999;
+      flex-wrap: wrap;
+    }
+    .dock-icon {
+      width: 50px; height: 50px; border-radius: 50%; background: #e3e3e3;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.3s; cursor: pointer;
+    }
+    .dock-icon:hover { transform: scale(1.15);}
+    .dock-icon.active { background: #3866A9;}
+    .dock-icon svg { width: 28px; height: 28px; fill: #05285c;}
+    .dock-icon.active svg { fill: #fff;}
+    @media (max-width: 900px) {
+      .dock { gap: 16px; padding: 12px 18px; border-radius: 22px;}
+      .dock-icon { width: 40px; height: 40px;}
+      .dock-icon svg { width: 22px; height: 22px;}
+    }
+    @media (max-width: 480px) {
+      .dock { gap: 7px; padding: 8px 10px; border-radius: 16px;}
+      .dock-icon { width: 28px; height: 28px;}
+      .dock-icon svg { width: 13px; height: 13px;}
+    }
+  </style>
+  <script>
+    function setActive(el) {
+      document.querySelectorAll('.dock-icon').forEach(icon => {
+        icon.classList.remove('active');
+      });
+      el.classList.add('active');
+    }
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</head>
+<body>
+  <div class="header-meditacao">
+    <button class="back-arrow" onclick="goBack()">
+      <svg width="26" height="26" viewBox="0 0 24 24"><path fill="#05285C" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    <h2>Meditações Guiadas</h2>
+    <img class="top-img" src="medguiada.png" alt="Foto Perfil" />
+  </div>
+  <div class="subtitulo">Sessões para aliviar a ansiedade</div>
+  <div class="main-content">
+    <div class="cards-lista">
+      <!-- CARD 1: LUA -->
+      <div class="card-meditacao">
+        <div class="icon-card">
+          <img src="Vector.png" alt="Ícone Lua" />
+        </div>
+        <div class="card-info">
+          <div class="card-titulo">Meditação para Dormir <span class="card-min">(8min)</span></div>
+          <div class="card-desc">Relaxe ansioso de dormir com respiração profunda</div>
+        </div>
+      </div>
+      <!-- CARD 2: VENTO -->
+      <div class="card-meditacao">
+        <div class="icon-card">
+          <img src="Vector (1).png" alt="Ícone Vento" />
+        </div>
+        <div class="card-info">
+          <div class="card-titulo">Meditação de Visualização <span class="card-min">(8min)</span></div>
+          <div class="card-desc">Crie imagens mentais positivas com relaxamento</div>
+        </div>
+      </div>
+      <!-- CARD 3: SETAS -->
+      <div class="card-meditacao">
+        <div class="icon-card">
+          <img src="Group.png" alt="Ícone Setas" />
+        </div>
+        <div class="card-info">
+          <div class="card-titulo">Meditação com Mantras <span class="card-min">(5min)</span></div>
+          <div class="card-desc">Repita afirmações para acalmar a mente</div>
+        </div>
+      </div>
+      <!-- CARD 4: ÁRVORE -->
+      <div class="card-meditacao">
+        <div class="icon-card">
+          <img src="Vector (2).png" alt="Ícone Árvore" />
+        </div>
+        <div class="card-info">
+          <div class="card-titulo">Meditação da Natureza <span class="card-min">(8min)</span></div>
+          <div class="card-desc">Relaxamento profundo com sons naturais: chuva, mar, floresta...</div>
+        </div>
+      </div>
+      <!-- CARD 5: CÍRCULO -->
+      <div class="card-meditacao">
+        <div class="icon-card">
+          <img src="Vector (3).png" alt="Ícone Círculo" />
+        </div>
+        <div class="card-info">
+          <div class="card-titulo">Meditação do Agora <span class="card-min">(7min)</span></div>
+          <div class="card-desc">Traga atenção plena ao momento presente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Dock do rodapé padrão SENZ -->
+  <div class="dock">
+    <!-- Ícone Casa (ativo) -->
+    <div class="dock-icon active" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+    </div>
+    <!-- Ícone Frequência Cardíaca -->
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 
+        12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 
+        3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 
+        16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 
+        6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+    <!-- Histórico Emocional -->
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 
+          12s4.48 10 10 10 10-4.48 10-10S17.52 
+          2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 
+          8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/>
+      </svg>
+    </div>
+    <!-- Gráficos -->
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M3 17h2v-7H3v7zm4 
+          0h2V7H7v10zm4 0h2v-4h-2v4zm4 
+          0h2V4h-2v13zm4 0h2v-9h-2v9z"/>
+      </svg>
+    </div>
+    <!-- Perfil -->
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 
+          1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 
+          1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+    </div>
+  </div>
+  <script>
+    function setActive(el) {
+      document.querySelectorAll('.dock-icon').forEach(icon => {
+        icon.classList.remove('active');
+      });
+      el.classList.add('active');
+    }
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</body>
+</html>
