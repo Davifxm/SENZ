@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ativação SENZ</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 32px 24px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .container img {
+      width: 96px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #05285c;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 24px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4d7dde;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #3a65c4;
+    }
+
+    .mensagem {
+      margin-top: 16px;
+      font-size: 15px;
+      color: green;
+      display: none;
+    }
+
+    .erro {
+      color: red;
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="./assets/img/pulseira.ativação.png" alt="Pulseira SENZ">
+    <h1>Ative sua pulseira SENZ</h1>
+    <p>Digite o código que veio com sua pulseira para desbloquear a plataforma.</p>
+
+    <input type="text" id="codigo" placeholder="Ex: senz1234" />
+    <button onclick="verificarCodigo()">Ativar plataforma</button>
+
+    <div class="mensagem" id="mensagem">✅ Plataforma liberada! Redirecionando...</div>
+    <div class="erro" id="erro">❌ Código inválido. Tente novamente.</div>
+  </div>
+
+  <script>
+    function verificarCodigo() {
+      const codigoValido = "senz1234";
+      const codigo = document.getElementById("codigo").value.trim().toLowerCase();
+      const msg = document.getElementById("mensagem");
+      const erro = document.getElementById("erro");
+
+      if (codigo === codigoValido) {
+        erro.style.display = "none";
+        msg.style.display = "block";
+
+        setTimeout(() => {
+          window.location.href = "explicacoes.html";
+        }, 2500); // Redireciona após 2.5 segundos
+      } else {
+        msg.style.display = "none";
+        erro.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
