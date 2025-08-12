@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
@@ -10,6 +10,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
   <style>
+    /* seu CSS aqui, sem alteração */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -117,6 +118,16 @@
       text-decoration: none;
     }
 
+    /* Link "Esqueci minha senha" */
+    #forgot-password {
+      color: #0C326C;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+      text-decoration: underline;
+    }
+
     @media (max-width: 480px) {
       .container {
         padding: 0 10px;
@@ -140,6 +151,10 @@
 
     <input id="email" type="email" placeholder="e-mail" />
     <input id="senha" type="password" placeholder="senha" />
+
+    <!-- Link para "Esqueci minha senha" -->
+    <p id="forgot-password">Esqueci minha senha</p>
+
     <button id="btnLogin">Fazer Login</button>
 
     <p class="footer">
@@ -149,7 +164,7 @@
   </div>
 
   <script>
-    // Sua configuração do Firebase (substitua pela sua)
+    // Configuração Firebase (sua config)
     var firebaseConfig = {
       apiKey: "AIzaSyBOqDbKnGTkP-35Hjsga8hnPQFqQRp7AME",
       authDomain: "senz-bae74.firebaseapp.com",
@@ -159,7 +174,6 @@
       appId: "1:604865943153:web:b17d947e686a5becc4add0",
       measurementId: "G-3GNNQWFVGH"
     };
-    // Inicializa Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
@@ -194,6 +208,23 @@
         });
     });
 
+    // "Esqueci minha senha"
+    document.getElementById('forgot-password').addEventListener('click', () => {
+      const email = prompt("Digite seu email para receber o link de redefinição de senha:");
+
+      if (!email) {
+        alert("Você precisa digitar um email válido.");
+        return;
+      }
+
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          alert("Email de redefinição enviado! Verifique sua caixa de entrada.");
+        })
+        .catch((error) => {
+          alert("Erro ao enviar email: " + error.message);
+        });
+    });
   </script>
 </body>
 </html>
