@@ -278,9 +278,9 @@
   <div class="main-content">
     <div class="header">
       <div class="logo-text">SENZ</div>
-      <div class="user-circle">D</div>
+      <div class="user-circle"></div>
     </div>
-    <div class="greeting">Bem vindo(a) de volta,<br>Danilo</div>
+    <div class="greeting">Bem vindo(a) de volta, <br></div>
     <div class="suggestion-card">
       <p>Parece que sua resposta galvânica aumentou.<br>Que tal uma respiração guiada agora?</p>
       <button>Iniciar Exercício</button>
@@ -345,75 +345,118 @@
       </svg>
     </div>
   </div>
-  <script>
-    function setActive(el) {
-      document.querySelectorAll('.dock-icon').forEach(icon => {
-        icon.classList.remove('active');
-      });
-      el.classList.add('active');
-    }
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
-    // --- Atualiza BPM do Firebase ---
-    // Use o mesmo secret do ESP, pois as regras do seu banco aceitam (para testes)
-    const firebaseSecret = "eGvu0jhnP7YMRVnuj4jGKxXmpq4fVW6x087THsVq";
-    const userId = localStorage.getItem('firebaseUid'); // esse UID precisa bater com o enviado pelo ESP
+<script>
+  // Sua configuração Firebase (substitua pelos seus dados)
+  const firebaseConfig = {
+            apiKey: "AIzaSyBOqDbKnGTkP-35Hjsga8hnPQFqQRp7AME",
+            authDomain: "senz-bae74.firebaseapp.com",
+            projectId: "senz-bae74",
+            storageBucket: "senz-bae74.appspot.com",
+            messagingSenderId: "604865943153",
+            appId: "1:604865943153:web:b17d947e686a5becc4add0",
+            measurementId: "G-3GNNQWFVGH"
+        };
+  firebase.initializeApp(firebaseConfig);
 
-    // Função para pegar o valor do card BPM
-    function getBpmValueElement() {
-      const metricCards = document.querySelectorAll('.metric-card');
-      for (let card of metricCards) {
-        if (card.textContent.includes('Nivel de Ansiedade')) {
-          return card.querySelector('.value');
-        }
+  function setActive(el) {
+    document.querySelectorAll('.dock-icon').forEach(icon => {
+      icon.classList.remove('active');
+    });
+    el.classList.add('active');
+  }
+
+  // Atualiza o nome e foto do usuário no header
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      const nome = user.displayName || {nome};
+      const foto = user.photoURL;
+
+      // Atualiza saudação
+      const greeting = document.querySelector('.greeting');
+      if (greeting) {
+        greeting.innerHTML = `Bem vindo(a) de volta,<br>${nome}`;
       }
-      return null;
-    }
 
-    async function buscarUltimoBPM() {
-      const bpmValueEl = getBpmValueElement();
-      if (!bpmValueEl) {
-        console.warn("Elemento de BPM não encontrado.");
-        return;
-      }
-      if (!userId) {
-        bpmValueEl.textContent = "-- bpm";
-        alert("Usuário não identificado. Faça login novamente.");
-        window.location.href = "index.html";
-        return;
-      }
-      const firebaseUrl = `https://senz-bae74-default-rtdb.firebaseio.com/users/${userId}/batimentos.json?auth=${firebaseSecret}`;
-      try {
-        const res = await fetch(firebaseUrl);
-        const data = await res.json();
-        // console.log("Dados recebidos:", data);
-
-        if (!data || Object.keys(data).length === 0) {
-          bpmValueEl.textContent = "-- bpm";
-          return;
-        }
-        let ultimoBpm = null;
-        let ultimoTimestamp = -1;
-        Object.values(data).forEach(item => {
-          if (item && item.timestamp > ultimoTimestamp) {
-            ultimoTimestamp = item.timestamp;
-            ultimoBpm = item.bpm;
-          }
-        });
-        if (ultimoBpm !== null) {
-          bpmValueEl.textContent = ultimoBpm + " bpm";
+      // Atualiza círculo do usuário
+      const userCircle = document.querySelector('.user-circle');
+      if (userCircle) {
+        if (foto) {
+          userCircle.innerHTML = `<img src="${foto}" alt="Foto de ${nome}" style="width:100%; height:100%; border-radius:50%;">`;
+          userCircle.style.border = "none";
+          userCircle.style.background = "transparent";
+          userCircle.style.color = "transparent";
         } else {
-          bpmValueEl.textContent = "-- bpm";
+          userCircle.textContent = nome.charAt(0).toUpperCase();
+          userCircle.style.border = "1.5px solid var(--cinza-borda)";
+          userCircle.style.background = "#f7fafd";
+          userCircle.style.color = "var(--cinza-txt)";
         }
-      } catch (e) {
-        bpmValueEl.textContent = "-- bpm";
-        console.error("Erro ao buscar BPM:", e);
+      }
+    } else {
+      // Se não estiver logado, redireciona para login
+      window.location.href = "index.html";
+    }
+  });
+
+  // --- Atualiza BPM do Firebase ---
+  const firebaseSecret = "eGvu0jhnP7YMRVnuj4jGKxXmpq4fVW6x087THsVq";
+  const userId = localStorage.getItem('firebaseUid');
+
+  function getBpmValueElement() {
+    const metricCards = document.querySelectorAll('.metric-card');
+    for (let card of metricCards) {
+      if (card.textContent.includes('Nivel de Ansiedade')) {
+        return card.querySelector('.value');
       }
     }
+    return null;
+  }
 
-    // Atualiza ao abrir e a cada minuto (60.000ms)
-    buscarUltimoBPM();
-    setInterval(buscarUltimoBPM, 10000);
+  async function buscarUltimoBPM() {
+    const bpmValueEl = getBpmValueElement();
+    if (!bpmValueEl) {
+      console.warn("Elemento de BPM não encontrado.");
+      return;
+    }
+    if (!userId) {
+      bpmValueEl.textContent = "-- bpm";
+      alert("Usuário não identificado. Faça login novamente.");
+      window.location.href = "index.html";
+      return;
+    }
+    const firebaseUrl = `https://senz-bae74-default-rtdb.firebaseio.com/users/${userId}/batimentos.json?auth=${firebaseSecret}`;
+    try {
+      const res = await fetch(firebaseUrl);
+      const data = await res.json();
 
-  </script>
+      if (!data || Object.keys(data).length === 0) {
+        bpmValueEl.textContent = "-- bpm";
+        return;
+      }
+      let ultimoBpm = null;
+      let ultimoTimestamp = -1;
+      Object.values(data).forEach(item => {
+        if (item && item.timestamp > ultimoTimestamp) {
+          ultimoTimestamp = item.timestamp;
+          ultimoBpm = item.bpm;
+        }
+      });
+      if (ultimoBpm !== null) {
+        bpmValueEl.textContent = ultimoBpm + " bpm";
+      } else {
+        bpmValueEl.textContent = "-- bpm";
+      }
+    } catch (e) {
+      bpmValueEl.textContent = "-- bpm";
+      console.error("Erro ao buscar BPM:", e);
+    }
+  }
+
+  buscarUltimoBPM();
+  setInterval(buscarUltimoBPM, 10000);
+</script>
 </body>
-</html>
+</html> 
