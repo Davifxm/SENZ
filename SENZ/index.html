@@ -1,108 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+    <link rel="stylesheet" href="./assets/css/style7.css">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
-  <title>SENZ - Bem-estar</title>
+  <title>SENZ</title>
 
-  <style>
-    /* Fade-out para transição de página */
-    .fade-out {
-      opacity: 0;
-      transition: opacity 1 ease-in-out;
-    }
-  </style>
 
-  <script>
-    // Aplica animação e redireciona após 4 segundos
-    window.onload = () => {
-      setTimeout(() => {
-        document.body.classList.add('fade-out');
-        setTimeout(() => {
-          window.location.href = "ativacao.html";
-        }, 1000); // Aguarda a transição de 1s antes de trocar de página
-      }, 4000);
-    };
-  </script>
+
 </head>
 <body>
   <div class="splash-container">
     <img src="./assets/img/logo.png" alt="Logo SENZ" class="logo" />
     <h1 class="brand-name">senz</h1>
   </div>
-
-  <style>
-    /* Reset padrão */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      height: 100vh;
-      width: 100vw;
-      background-color: #ffffff;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .splash-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-  .logo {
-  width: 35vw;         /* Aumentado de 30vw para 35vw */
-  max-width: 280px;    /* Aumentado de 250px para 280px */
-  min-width: 120px;
-  height: auto;
-  margin-bottom: 8px;  /* Um espaço sutil entre logo e texto */
-}
+  <script src="./assets/js/script7.js"></script>
 
 
-    .brand-name {
-      font-size: 10vw;
-      font-weight: bold;
-      color: #0C326C;
-    }
-
-    @media (max-width: 768px) {
-      .logo {
-        width: 40vw;
-        max-width: 200px;
-      }
-
-      .brand-name {
-        font-size: 6vw;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .logo {
-        width: 50vw;
-        max-width: 160px;
-      }
-
-      .brand-name {
-        font-size: 7vw;
-      }
-    }
-
-    .radio-box.active {
-      animation: pulse 0.2s ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(1.04); }
-      100% { transform: scale(1); }
-    }
-  </style>
 </body>
 </html>
