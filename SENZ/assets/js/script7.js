@@ -1,8 +1,0 @@
-    window.onload = () => {
-      setTimeout(() => {
-        document.body.classList.add('fade-out');
-        setTimeout(() => {
-          window.location.href = "ativacao.html";
-        }, 1000); // Aguarda a transição de 1s antes de trocar de página
-      }, 4000);
-    };
