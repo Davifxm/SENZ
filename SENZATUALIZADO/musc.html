@@ -91,10 +91,6 @@
       align-items: center;
       justify-content: center;
     }
-    .music-box .icon-circle img {
-      width: 30px;
-      height: 30px;
-    }
     .music-title { font-weight: 600; font-size: 18px; }
     .music-desc { font-size: 13px; color: #133a6c; margin-top: 6px; }
 
@@ -139,73 +135,129 @@
       .dock-icon { width: 38px; height: 38px; }
       .dock-icon svg { width: 20px; height: 20px; }
     }
+
+    /* ===== MODAL “EM ANDAMENTO” ===== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .modal {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      animation: pop 0.18s ease-out;
+    }
+    .modal h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #05285c;
+      font-weight: 700;
+    }
+    .modal p {
+      font-size: 14px;
+      color: #1d3d66;
+      margin-bottom: 18px;
+    }
+    .modal .btn {
+      display: inline-block;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: #3866A9;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .1s ease, opacity .2s ease;
+    }
+    .modal .btn:active { transform: scale(0.98); }
+    .modal-close {
+      position: absolute;
+      right: 12px;
+      top: 10px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .modal-close svg { width: 22px; height: 22px; fill: #05285c; }
+
+    @keyframes pop {
+      from { transform: scale(.96); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .show { display: flex !important; }
   </style>
 </head>
 <body>
 
-  <!-- TOPO COM SETA E USUÁRIO -->
+  <!-- TOPO COM SETA -->
   <div class="top-bar">
     <div class="icon-btn" onclick="window.location.href='intervencoes.html'" title="Voltar">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
       </svg>
     </div>
-  
   </div>
 
   <div class="container">
-  <div class="m-sicas-calmante">Músicas Calmantes</div>
-  <div class="pr-ticas-para-aliviar-o-estresse">Práticas para aliviar o estresse</div>
+    <div class="m-sicas-calmante">Músicas Calmantes</div>
+    <div class="pr-ticas-para-aliviar-o-estresse">Práticas para aliviar o estresse</div>
 
-  <!-- Sons da natureza -->
-  <div class="music-box" data-link="sonnatu.html">
-    <div class="icon-circle">
-      <!-- Ícone Folha -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
-        <path d="M12 2C8 2 5 5 5 9c0 5 5 11 7 13 2-2 7-8 7-13 0-4-3-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5 14.5 7.6 14.5 9 13.4 11.5 12 11.5z"/>
-      </svg>
+    <!-- Sons da natureza (navega normalmente) -->
+    <div class="music-box" data-link="sonnatu.html">
+      <div class="icon-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
+          <path d="M12 2C8 2 5 5 5 9c0 5 5 11 7 13 2-2 7-8 7-13 0-4-3-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5 14.5 7.6 14.5 9 13.4 11.5 12 11.5z"/>
+        </svg>
+      </div>
+      <div class="music-title">Sons da natureza</div>
+      <div class="music-desc">Chuva, floresta e mar</div>
     </div>
-    <div class="music-title">Sons da natureza</div>
-    <div class="music-desc">Chuva, floresta e mar</div>
-  </div>
 
-  <!-- Ondas Alfa -->
-  <div class="music-box" data-link="ondas-alfa.html">
-    <div class="icon-circle">
-      <!-- Ícone Onda -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
-        <path d="M2 12c2-1 4-1 6 0s4 1 6 0 4-1 6 0 4 1 6 0v2c-2 1-4 1-6 0s-4-1-6 0-4 1-6 0-4-1-6 0v-2z"/>
-      </svg>
+    <!-- Ondas Alfa (popup Em andamento) -->
+    <div class="music-box" data-link="ondas-alfa.html">
+      <div class="icon-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
+          <path d="M2 12c2-1 4-1 6 0s4 1 6 0 4-1 6 0 4 1 6 0v2c-2 1-4 1-6 0s-4-1-6 0-4 1-6 0-4-1-6 0v-2z"/>
+        </svg>
+      </div>
+      <div class="music-title">Ondas Cerebrais Alfa</div>
+      <div class="music-desc">Relaxe cada parte do corpo</div>
     </div>
-    <div class="music-title">Ondas Cerebrais Alfa</div>
-    <div class="music-desc">Relaxe cada parte do corpo</div>
-  </div>
 
-  <!-- Instrumental -->
-  <div class="music-box" data-link="instrumental.html">
-    <div class="icon-circle">
-      <!-- Ícone Nota Musical -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
-        <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
-      </svg>
+    <!-- Instrumental (popup Em andamento) -->
+    <div class="music-box" data-link="instrumental.html">
+      <div class="icon-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
+          <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
+        </svg>
+      </div>
+      <div class="music-title">Instrumental Relaxante</div>
+      <div class="music-desc">Violão, piano, violino...</div>
     </div>
-    <div class="music-title">Instrumental Relaxante</div>
-    <div class="music-desc">Violão, piano, violino...</div>
-  </div>
 
-  <!-- Batidas -->
-  <div class="music-box" data-link="batidas.html">
-    <div class="icon-circle">
-      <!-- Ícone Ritmo / Batida -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
-        <path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/>
-      </svg>
+    <!-- Batidas (popup Em andamento) -->
+    <div class="music-box" data-link="batidas.html">
+      <div class="icon-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
+          <path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/>
+        </svg>
+      </div>
+      <div class="music-title">Batidas Lentas e Suaves</div>
+      <div class="music-desc">Ritmos entre 60 e 80 batidas</div>
     </div>
-    <div class="music-title">Batidas Lentas e Suaves</div>
-    <div class="music-desc">Ritmos entre 60 e 80 batidas</div>
   </div>
-</div>
-
 
   <!-- DOCK -->
   <div class="dock">
@@ -226,17 +278,81 @@
     </div>
   </div>
 
+  <!-- MODAL -->
+  <div id="modal-andamento" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="andamento-title" aria-hidden="true">
+    <div class="modal">
+      <button class="modal-close" aria-label="Fechar" onclick="fecharAndamento()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+      <h3 id="andamento-title">Em andamento</h3>
+      <p>Esta seção ainda está sendo preparada.</p>
+      <button class="btn" onclick="fecharAndamento()">Voltar para Músicas Calmantes</button>
+    </div>
+  </div>
+
   <script>
     function setActive(el) {
       document.querySelectorAll('.dock-icon').forEach(icon => icon.classList.remove('active'));
       el.classList.add('active');
     }
+
+    // Modal helpers
+    const modal = document.getElementById('modal-andamento');
+    function abrirAndamento() {
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    function fecharAndamento() {
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+    // Fecha clicando no fundo
+    modal.addEventListener('click', (e) => { if (e.target === modal) fecharAndamento(); });
+    // Fecha com ESC
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharAndamento(); });
+
+    // Links que devem abrir o popup "Em andamento"
+    const emAndamentoLinks = new Set([
+      'ondas-alfa.html',
+      'instrumental.html',
+      'batidas.html'
+    ]);
+
+    // Clique nas músicas
     document.querySelectorAll('.music-box').forEach(box => {
       box.addEventListener('click', () => {
         const destino = box.getAttribute('data-link');
-        if (destino) window.location.href = destino;
+
+        // Se for um dos itens marcados como "Em andamento", abre o modal
+        if (destino && emAndamentoLinks.has(destino)) {
+          abrirAndamento();
+          return;
+        }
+
+        // Caso contrário, navega se houver link; se não, mostra alerta simples
+        if (destino) {
+          window.location.href = destino;
+        } else {
+          alert("Em andamento");
+        }
       });
     });
+
+    // Dock: se não tiver data-link definido, mostra "Em andamento"
+    document.querySelectorAll('.dock-icon').forEach(icon => {
+      icon.addEventListener('click', function() {
+        const destino = this.getAttribute('data-link');
+        if (destino) {
+          window.location.href = destino;
+        } else {
+          // mantém feedback visual e informa status
+          alert("Em andamento");
+        }
+      });
+    });
+
+    // Expor a função para o botão do modal
+    window.fecharAndamento = fecharAndamento;
   </script>
 
 </body>
