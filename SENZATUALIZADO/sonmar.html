@@ -5,15 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sons da Natureza</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
 
     body {
       font-family: "Inter", sans-serif;
@@ -23,219 +16,110 @@
       position: relative;
     }
 
-    .arrow-left, .usuario {
-      position: absolute;
-      top: 20px;
-      width: 36px;
-      height: 36px;
-    }
+    .arrow-left, .usuario { position: absolute; top: 20px; width: 36px; height: 36px; }
+    .arrow-left { left: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .arrow-left svg { width: 100%; height: 100%; transition: transform 0.2s, opacity 0.3s; fill: #ffffff; }
+    .arrow-left:hover svg { transform: scale(1.1); opacity: 0.8; }
+    .usuario { right: 20px; }
 
-    .arrow-left {
-      left: 20px;
-      cursor: pointer;
-    }
-
-    .usuario {
-      right: 20px;
-    }
-
-    .m-sicas-calmante {
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-      margin-top: 80px;
-    }
-
-    .pr-ticas-para-aliviar-o-estresse {
-      text-align: center;
-      font-size: 16px;
-      margin: 10px 0 30px;
-      color: #c9c9c9;
-    }
+    .m-sicas-calmante { text-align: center; font-size: 28px; font-weight: bold; margin-top: 80px; }
+    .pr-ticas-para-aliviar-o-estresse { text-align: center; font-size: 16px; margin: 10px 0 30px; color: #c9c9c9; }
 
     .rectangle-47 {
-      width: 90%;
-      max-width: 400px;
-      margin: 0 auto;
-      border-radius: 16px;
-      overflow: hidden;
+      width: 90%; max-width: 400px; margin: 0 auto; border-radius: 16px; overflow: hidden;
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
-
-    .arvores-1 {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+    .arvores-1 { width: 100%; height: auto; display: block; }
 
     .setas-baixo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 90%;
-      max-width: 400px;
-      margin: 16px auto 0;
+      display: flex; justify-content: space-between; align-items: center;
+      width: 90%; max-width: 400px; margin: 16px auto 0;
     }
+    .seta { width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .seta svg { width: 100%; height: 100%; transition: transform 0.2s, opacity 0.3s; fill: #ffffff; }
+    .seta:hover svg { transform: scale(1.1); opacity: 0.8; }
 
-    .setas-baixo img {
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      transition: transform 0.2s, opacity 0.3s;
-      filter: none;
-    }
-
-    .setas-baixo img:hover {
-      transform: scale(1.1);
-      opacity: 0.8;
-    }
-
-    .sons-da-natureza {
-      text-align: center;
-      font-size: 30px;
-      font-weight: 600;
-      margin-top: -35px;
-      color: #4F8DDB;
-    }
+    .sons-da-natureza { text-align: center; font-size: 30px; font-weight: 600; margin-top: -35px; color: #4F8DDB; }
 
     .pause-button {
-      display: block;
-      margin: 20px auto;
-      padding: 12px 32px;
-      background-color: #3866A9;
-      border: none;
-      border-radius: 24px;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
+      display: block; margin: 20px auto; padding: 12px 32px;
+      background-color: #3866A9; border: none; border-radius: 24px; color: white;
+      font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s;
+      box-shadow: 0 6px 16px rgba(56,102,169,.25);
     }
-
-    .pause-button:hover {
-      background-color: #4F8DDB;
-    }
+    .pause-button:hover { background-color: #4F8DDB; }
 
     .line-container {
-      position: relative;
-      width: 90%;
-      max-width: 400px;
-      margin: 30px auto;
-      height: 6px;
-      background: #444;
-      border-radius: 4px;
+      position: relative; width: 90%; max-width: 400px; margin: 30px auto;
+      height: 10px; background: rgba(255,255,255,.12); border-radius: 999px; overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
     }
 
     .line-highlight {
       height: 100%;
-      background-color: #4F8DDB;
-      width: 40%;
-      border-radius: 4px;
+      background: linear-gradient(90deg, #4F8DDB, #6EA2FF);
+      width: 0%;
+      border-radius: 999px;
+      box-shadow: 0 0 16px rgba(79,141,219,.35);
+      transition: width .35s ease;
     }
 
     .ellipse-31 {
-      width: 14px;
-      height: 14px;
-      background: #4F8DDB;
-      border-radius: 50%;
-      position: absolute;
-      left: 40%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      width: 16px; height: 16px; background: #4F8DDB; border-radius: 50%;
+      position: absolute; left: 0%; top: 50%; transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 3px rgba(79,141,219,.20), 0 6px 12px rgba(0,0,0,.25), 0 0 14px rgba(79,141,219,.45);
+      transition: left .35s ease;
     }
 
     .dock {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 18px;
-      background: #282828;
-      padding: 14px 28px;
-      border-radius: 28px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-      z-index: 999;
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 18px; background: #282828; padding: 14px 28px; border-radius: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5); z-index: 999;
     }
-
     .dock-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #121212;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s, background 0.3s;
-      cursor: pointer;
+      width: 48px; height: 48px; border-radius: 50%; background: #121212;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.3s; cursor: pointer;
     }
-
-    .dock-icon:hover {
-      transform: scale(1.1);
-      background: #4F8DDB;
-    }
-
-    .dock-icon svg {
-      width: 24px;
-      height: 24px;
-      fill: #fff;
-    }
-
-    .dock-icon.active {
-      background: #4F8DDB;
-    }
-
-    .dock-icon.active svg {
-      fill: #000;
-    }
+    .dock-icon:hover { transform: scale(1.1); background: #4F8DDB; }
+    .dock-icon svg { width: 24px; height: 24px; fill: #fff; }
+    .dock-icon.active { background: #4F8DDB; }
+    .dock-icon.active svg { fill: #000; }
 
     @media (max-width: 600px) {
-      .m-sicas-calmante {
-        font-size: 24px;
-      }
-
-      .sons-da-natureza {
-        font-size: 20px;
-      }
-
-      .pause-button {
-        font-size: 14px;
-        padding: 10px 24px;
-      }
-
-      .dock {
-        gap: 10px;
-        padding: 10px 16px;
-      }
-
-      .dock-icon {
-        width: 38px;
-        height: 38px;
-      }
-
-      .dock-icon svg {
-        width: 20px;
-        height: 20px;
-      }
+      .m-sicas-calmante { font-size: 24px; }
+      .sons-da-natureza { font-size: 20px; }
+      .pause-button { font-size: 14px; padding: 10px 24px; }
+      .dock { gap: 10px; padding: 10px 16px; }
+      .dock-icon { width: 38px; height: 38px; }
+      .dock-icon svg { width: 20px; height: 20px; }
     }
   </style>
 </head>
 <body>
 
-  <img class="arrow-left" src="./assets/img/seta-para-baixo (2).png" alt="Voltar" onclick="window.location.href='musc.html'"/>
-  
+  <!-- Seta de voltar no topo (SVG) -->
+  <div class="arrow-left" onclick="window.location.href='musc.html'">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Voltar">
+      <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+    </svg>
+  </div>
 
   <div class="m-sicas-calmante">Músicas Calmantes</div>
   <div class="pr-ticas-para-aliviar-o-estresse">Práticas para aliviar o estresse</div>
 
   <div class="rectangle-47">
-    <img class="arvores-1" src="./assets/img/chuva_ 1.png" alt="Natureza">
+    <img class="arvores-1" src="./assets/img/chuva_ 1 (1).png" alt="Natureza">
   </div>
 
-  <!-- SETAS BRANCAS ABAIXO DA IMAGEM -->
+  <!-- ABAIXO DA IMAGEM: setas esquerda/direita (SVG) -->
   <div class="setas-baixo">
-    <img src="./assets/img/seta-direita - Copia.png" alt="Voltar" onclick="history.back()" />
-    <img src="./assets/img/seta-direita.png" alt="Próxima" onclick="window.location.href='sonmar.html'" />
+    <div class="seta" onclick="window.location.href='sonnatu.html'" aria-label="Voltar">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </div>
+    <div class="seta" onclick="window.location.href='sonnatu.html'" aria-label="Próxima">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+    </div>
   </div>
 
   <div class="sons-da-natureza">Sons de Chuva</div>
@@ -265,16 +149,83 @@
   </div>
 
   <script>
+    // ======= PLAYLIST / CONFIG =======
+    // Coloque aqui as páginas de cada música na ordem:
+    const PLAYLIST = [
+      'sonnatu.html', // (exemplo) esta página
+      'sonmar.html',    // próxima
+      'sonnatu.html' // outra (adicione/remova como quiser)
+    ];
+    const DURATION_MS = 10000; // 45s (deixe igual ao tempo da faixa real, se tiver)
+    // =================================
+
+    // Tenta descobrir qual item da playlist é esta página:
+    const CURRENT_FILE = location.pathname.split('/').pop() || 'index.html';
+    let currentIndex = PLAYLIST.indexOf(CURRENT_FILE);
+    if (currentIndex === -1) currentIndex = 0; // fallback se o nome não bater
+
+    // Ao terminar, vai para a PRÓXIMA música da playlist
+    function goNext() {
+      const next = (currentIndex + 1) % PLAYLIST.length;
+      window.location.href = PLAYLIST[next];
+    }
+
+    // Voltar música
+    function goPrev() {
+      const prev = (currentIndex - 1 + PLAYLIST.length) % PLAYLIST.length;
+      window.location.href = PLAYLIST[prev];
+    }
+
+    // ======= PROGRESSO / PLAYER SIMULADO =======
     let playing = true;
+    let startTime = 0;
+    let pausedElapsed = 0;
+    let rafId = null;
+
+    const btn = document.querySelector('.pause-button');
+    const bar = document.querySelector('.line-highlight');
+    const knob = document.querySelector('.ellipse-31');
+
+    function updateProgress(frac) {
+      const pct = (frac * 100);
+      bar.style.width = pct + '%';
+      knob.style.left = pct + '%';
+    }
+
+    function step() {
+      const now = performance.now();
+      const elapsed = now - startTime;
+      let frac = Math.min((pausedElapsed + elapsed) / DURATION_MS, 1);
+      updateProgress(frac);
+
+      if (frac < 1 && playing) {
+        rafId = requestAnimationFrame(step);
+      } else if (frac >= 1) {
+        // acabou a "música" -> ir para a próxima
+        goNext();
+      }
+    }
+
+    function resume() {
+      startTime = performance.now();
+      playing = true;
+      rafId = requestAnimationFrame(step);
+    }
+
+    function pause() {
+      playing = false;
+      cancelAnimationFrame(rafId);
+      const now = performance.now();
+      pausedElapsed += (now - startTime);
+    }
 
     function toggleMusic() {
-      const btn = document.querySelector('.pause-button');
       if (playing) {
         btn.innerHTML = 'Reproduzir';
-        playing = false;
+        pause();
       } else {
         btn.innerHTML = 'Pausar';
-        playing = true;
+        resume();
       }
     }
 
@@ -282,6 +233,13 @@
       document.querySelectorAll('.dock-icon').forEach(icon => icon.classList.remove('active'));
       el.classList.add('active');
     }
+
+    // inicia do zero, animando
+    window.addEventListener('DOMContentLoaded', () => {
+      pausedElapsed = 0;
+      updateProgress(0);
+      resume();
+    });
   </script>
 
 </body>

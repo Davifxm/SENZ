@@ -4,17 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Músicas Calmantes</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
 
     body {
       font-family: "Inter", sans-serif;
@@ -29,18 +21,42 @@
     .container {
       width: 100%;
       max-width: 800px;
-      padding: 40px;
-      position: relative;
+      padding: 40px 20px;
       flex: 1;
+      position: relative;
     }
 
+    /* ===== TOPO COM ÍCONES ===== */
+    .top-bar {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .icon-btn:hover { background: rgba(0,0,0,0.05); }
+    .icon-btn svg { width: 24px; height: 24px; fill: #05285c; }
+
+    /* ===== TÍTULOS ===== */
     .m-sicas-calmante {
       font-size: 32px;
       font-weight: 600;
       text-align: center;
       margin-bottom: 10px;
     }
-
     .pr-ticas-para-aliviar-o-estresse {
       font-size: 18px;
       text-align: center;
@@ -48,6 +64,7 @@
       color: #1d3d66;
     }
 
+    /* ===== BOX DE MÚSICA ===== */
     .music-box {
       background: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.09);
@@ -59,10 +76,7 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-
-    .music-box:hover {
-      background: #f0f4ff;
-    }
+    .music-box:hover { background: #f0f4ff; }
 
     .music-box .icon-circle {
       width: 60px;
@@ -77,39 +91,14 @@
       align-items: center;
       justify-content: center;
     }
-
     .music-box .icon-circle img {
       width: 30px;
       height: 30px;
     }
+    .music-title { font-weight: 600; font-size: 18px; }
+    .music-desc { font-size: 13px; color: #133a6c; margin-top: 6px; }
 
-    .music-title {
-      font-weight: 600;
-      font-size: 18px;
-    }
-
-    .music-desc {
-      font-size: 13px;
-      color: #133a6c;
-      margin-top: 6px;
-    }
-
-    .back-icon,
-    .user-icon {
-      position: absolute;
-      top: 10px;
-      width: 36px;
-      height: 38px;
-    }
-
-    .back-icon {
-      left: 10px;
-    }
-
-    .user-icon {
-      right: 10px;
-    }
-
+    /* ===== DOCK ===== */
     .dock {
       position: fixed;
       bottom: 20px;
@@ -123,7 +112,6 @@
       box-shadow: 0 3px 12px rgba(0,0,0,0.1);
       z-index: 999;
     }
-
     .dock-icon {
       width: 48px;
       height: 48px;
@@ -135,118 +123,97 @@
       transition: transform 0.2s, background 0.3s;
       cursor: pointer;
     }
-
-    .dock-icon:hover {
-      transform: scale(1.15);
-    }
-
-    .dock-icon.active {
-      background: #3866A9;
-    }
-
-    .dock-icon svg {
-      width: 26px;
-      height: 26px;
-      fill: #05285c;
-    }
-
-    .dock-icon.active svg {
-      fill: #fff;
-    }
+    .dock-icon:hover { transform: scale(1.15); }
+    .dock-icon.active { background: #3866A9; }
+    .dock-icon svg { width: 26px; height: 26px; fill: #05285c; }
+    .dock-icon.active svg { fill: #fff; }
 
     @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-        max-width: 100%;
-      }
-
-      .m-sicas-calmante {
-        font-size: 24px;
-      }
-
-      .pr-ticas-para-aliviar-o-estresse {
-        font-size: 15px;
-        margin-bottom: 28px;
-      }
-
-      .music-box {
-        padding: 14px 12px 14px 75px;
-        margin: 16px 0;
-      }
-
-      .music-box .icon-circle {
-        width: 50px;
-        height: 50px;
-        left: 12px;
-      }
-
-      .music-title {
-        font-size: 16px;
-      }
-
-      .music-desc {
-        font-size: 11px;
-      }
-
-      .dock {
-        gap: 14px;
-        padding: 10px 16px;
-      }
-
-      .dock-icon {
-        width: 38px;
-        height: 38px;
-      }
-
-      .dock-icon svg {
-        width: 20px;
-        height: 20px;
-      }
+      .m-sicas-calmante { font-size: 24px; }
+      .pr-ticas-para-aliviar-o-estresse { font-size: 15px; margin-bottom: 28px; }
+      .music-box { padding: 14px 12px 14px 75px; margin: 16px 0; }
+      .music-box .icon-circle { width: 50px; height: 50px; left: 12px; }
+      .music-title { font-size: 16px; }
+      .music-desc { font-size: 11px; }
+      .dock { gap: 14px; padding: 10px 16px; }
+      .dock-icon { width: 38px; height: 38px; }
+      .dock-icon svg { width: 20px; height: 20px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <img class="back-icon" src="Arrow left (1).png" alt="Voltar" />
-    <img class="user-icon" src="0c5f623c-f62d-43a0-878f-fb3a88267eef 3.png" alt="Usuário" />
-
-    <div class="m-sicas-calmante">Músicas Calmantes</div>
-    <div class="pr-ticas-para-aliviar-o-estresse">Práticas para aliviar o estresse</div>
-
-    <!-- BLOCOS CLICÁVEIS COM LINKS PERSONALIZADOS -->
-    <div class="music-box" data-link="sonnatu.html">
-      <div class="icon-circle"><img src="./assets/img/Polygon 1.png" alt="icon" /></div>
-      <div class="music-title">Sons da natureza</div>
-      <div class="music-desc">Chuva, floresta e mar</div>
+  <!-- TOPO COM SETA E USUÁRIO -->
+  <div class="top-bar">
+    <div class="icon-btn" onclick="window.location.href='intervencoes.html'" title="Voltar">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+      </svg>
     </div>
-
-    <div class="music-box" data-link="ondas-alfa.html">
-      <div class="icon-circle"><img src="./assets/img/Polygon 2.png" alt="icon" /></div>
-      <div class="music-title">Ondas Cerebrais Alfa</div>
-      <div class="music-desc">Relaxe cada parte do corpo</div>
-    </div>
-
-    <div class="music-box" data-link="instrumental.html">
-      <div class="icon-circle"><img src="./assets/img/Polygon 3.png" alt="icon" /></div>
-      <div class="music-title">Instrumental Relaxante</div>
-      <div class="music-desc">Violão, piano, violino...</div>
-    </div>
-
-    <div class="music-box" data-link="batidas.html">
-      <div class="icon-circle"><img src="./assets/img/Polygon 4.png" alt="icon" /></div>
-      <div class="music-title">Batidas Lentas e Suaves</div>
-      <div class="music-desc">Ritmos entre 60 e 80 batidas</div>
-    </div>
+  
   </div>
 
-  <!-- DOCK BAR -->
+  <div class="container">
+  <div class="m-sicas-calmante">Músicas Calmantes</div>
+  <div class="pr-ticas-para-aliviar-o-estresse">Práticas para aliviar o estresse</div>
+
+  <!-- Sons da natureza -->
+  <div class="music-box" data-link="sonnatu.html">
+    <div class="icon-circle">
+      <!-- Ícone Folha -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
+        <path d="M12 2C8 2 5 5 5 9c0 5 5 11 7 13 2-2 7-8 7-13 0-4-3-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5 14.5 7.6 14.5 9 13.4 11.5 12 11.5z"/>
+      </svg>
+    </div>
+    <div class="music-title">Sons da natureza</div>
+    <div class="music-desc">Chuva, floresta e mar</div>
+  </div>
+
+  <!-- Ondas Alfa -->
+  <div class="music-box" data-link="ondas-alfa.html">
+    <div class="icon-circle">
+      <!-- Ícone Onda -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
+        <path d="M2 12c2-1 4-1 6 0s4 1 6 0 4-1 6 0 4 1 6 0v2c-2 1-4 1-6 0s-4-1-6 0-4 1-6 0-4-1-6 0v-2z"/>
+      </svg>
+    </div>
+    <div class="music-title">Ondas Cerebrais Alfa</div>
+    <div class="music-desc">Relaxe cada parte do corpo</div>
+  </div>
+
+  <!-- Instrumental -->
+  <div class="music-box" data-link="instrumental.html">
+    <div class="icon-circle">
+      <!-- Ícone Nota Musical -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
+        <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
+      </svg>
+    </div>
+    <div class="music-title">Instrumental Relaxante</div>
+    <div class="music-desc">Violão, piano, violino...</div>
+  </div>
+
+  <!-- Batidas -->
+  <div class="music-box" data-link="batidas.html">
+    <div class="icon-circle">
+      <!-- Ícone Ritmo / Batida -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#05285c" width="28" height="28">
+        <path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/>
+      </svg>
+    </div>
+    <div class="music-title">Batidas Lentas e Suaves</div>
+    <div class="music-desc">Ritmos entre 60 e 80 batidas</div>
+  </div>
+</div>
+
+
+  <!-- DOCK -->
   <div class="dock">
     <div class="dock-icon" onclick="setActive(this)">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     </div>
     <div class="dock-icon active" onclick="setActive(this)">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.08 2.42-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3c3.08 0 5.5 2.42 5.5 5.5 0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
     </div>
     <div class="dock-icon" onclick="setActive(this)">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg>
@@ -264,13 +231,10 @@
       document.querySelectorAll('.dock-icon').forEach(icon => icon.classList.remove('active'));
       el.classList.add('active');
     }
-
     document.querySelectorAll('.music-box').forEach(box => {
       box.addEventListener('click', () => {
         const destino = box.getAttribute('data-link');
-        if (destino) {
-          window.location.href = destino;
-        }
+        if (destino) window.location.href = destino;
       });
     });
   </script>

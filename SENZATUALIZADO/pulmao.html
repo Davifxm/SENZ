@@ -46,15 +46,8 @@
       z-index: 999;
       transition: background 0.2s;
     }
-    .back-arrow:hover {
-      background: var(--azul-leve);
-    }
-    .back-arrow svg {
-      width: 25px;
-      height: 25px;
-      fill: var(--azul-principal);
-      transition: fill 0.18s;
-    }
+    .back-arrow:hover { background: var(--azul-leve); }
+    .back-arrow svg { width: 25px; height: 25px; fill: var(--azul-principal); transition: fill 0.18s; }
     @media (max-width: 700px) {
       .back-arrow { width: 36px; height: 36px; top: 12px; left: 10px;}
       .back-arrow svg { width: 19px; height: 19px;}
@@ -114,25 +107,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: expandir 5s ease-in-out infinite;
-      animation-play-state: paused;
+      /* Tiramos a animação CSS para controlar tudo via JS */
       box-shadow: 0 4px 30px rgba(0,0,0,0.08);
       overflow: visible;
     }
-    .pulmao svg {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
+    .pulmao svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
     .pulmao .pulmao-arco { stroke: white; fill: none; opacity: 0.24; stroke-width: 4; }
     .pulmao .pulmao-arco2 { stroke-width: 2.6; opacity: 0.13;}
     .pulmao .pulmao-arco3 { stroke-width: 1.5; opacity: 0.08;}
-    @keyframes expandir {
-      0%, 100% { transform: scale(1);}
-      50% { transform: scale(1.12);}
-    }
+
     .nome-tecnica {
       font-weight: bold;
       font-size: 1.15rem;
@@ -141,6 +124,8 @@
       margin-bottom: 0.3rem;
       text-align: center;
     }
+
+    /* ===== barra de progresso sincronizada ===== */
     .barra {
       margin: 0.35rem auto 0.70rem auto;
       width: min(280px, 65vw);
@@ -153,12 +138,13 @@
       align-items: center;
     }
     .progresso {
-      width: 37%;
+      width: 0%;
       height: 100%;
       background-color: var(--azul-principal);
       border-radius: 2px;
-      transition: width 0.3s;
+      transition: width 0.25s linear; /* suave e contínuo */
     }
+
     .botoes {
       display: flex;
       align-items: center;
@@ -182,12 +168,7 @@
     .botao-play svg { width: 24px; height: 24px; fill: #fff;}
 
     /* Dock flutuante centralizado */
-    .espaco-rodape {
-      height: 105px;
-      width: 100%;
-      max-width: 700px;
-      margin: 0 auto;
-    }
+    .espaco-rodape { height: 105px; width: 100%; max-width: 700px; margin: 0 auto; }
     .dock-flutuante {
       position: fixed;
       left: 50%;
@@ -218,24 +199,13 @@
       font-size: 1.35rem;
     }
     .dock-flutuante .dock-icon.active,
-    .dock-flutuante .dock-icon:hover {
-      background: var(--azul-circulo);
-      color: #fff;
-      transform: scale(1.07);
-    }
-    .dock-flutuante .dock-icon svg {
-      width: 24px; height: 24px; fill: var(--azul-principal); transition: fill 0.18s;}
+    .dock-flutuante .dock-icon:hover { background: var(--azul-circulo); color: #fff; transform: scale(1.07); }
+    .dock-flutuante .dock-icon svg { width: 24px; height: 24px; fill: var(--azul-principal); transition: fill 0.18s;}
     .dock-flutuante .dock-icon.active svg,
     .dock-flutuante .dock-icon:hover svg { fill: #fff; }
 
     @media (max-width: 700px) {
-      .container,
-      main,
-      .espaco-rodape,
-      header {
-        max-width: 99vw;
-        padding: 0 6px;
-      }
+      .container, main, .espaco-rodape, header { max-width: 99vw; padding: 0 6px; }
     }
     @media (max-width: 600px) {
       .dock-flutuante { padding: 7px 8px; border-radius: 17px; gap: 12px; bottom: 7px;}
@@ -252,59 +222,93 @@
   </style>
   <script>
     function goBack() { window.history.back(); }
+
+    // ===== Controle contínuo (sem voltar) =====
     let animando = false;
-    let pulmao, icon, svg, arco1, arco2, arco3, animFrame;
-    let progress = 0;
+    let pulmao, icon, arco1, arco2, arco3, animFrame;
+    let startTime = 0;
+    let pausedElapsed = 0; // acumula tempo quando pausa
+    const SCALE_DUR_MS = 60000;   // 60s para atingir escala máxima do pulmão
+    const PROG_DUR_MS  = 1000;  // 180s (3min) para encher a barra de 0 a 100%
+
+    // Easing helpers
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+    const easeInOutCubic = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2;
+    const lerp = (a,b,t) => a + (b-a)*t;
+
     function toggleAnimacao() {
       animando = !animando;
+      const now = performance.now();
       if (animando) {
-        pulmao.style.animationPlayState = 'running';
-        icon.setAttribute('d', 'M6 4h4v16H6zm8 0h4v16h-4z');
-        animateSVG();
+        startTime = now;
+        icon.setAttribute('d', 'M6 4h4v16H6zm8 0h4v16h-4z'); // pause
+        animFrame = requestAnimationFrame(frame);
       } else {
-        pulmao.style.animationPlayState = 'paused';
-        icon.setAttribute('d', 'M8 5v14l11-7z');
+        icon.setAttribute('d', 'M8 5v14l11-7z'); // play
+        pausedElapsed += (now - startTime);
         cancelAnimationFrame(animFrame);
       }
     }
-    function animateSVG() {
-      const dur = 5000;
-      const start = performance.now() - (progress * dur);
-      function frame(now) {
-        let t = ((now - start) % dur) / dur;
-        let s = 1 + 0.15 * Math.sin(t * 2 * Math.PI);
-        let base = pulmao.offsetWidth / 2;
-        arco1.setAttribute('r', (base * 0.72 * s).toFixed(1));
-        arco2.setAttribute('r', (base * 0.52 * s).toFixed(1));
-        arco3.setAttribute('r', (base * 0.33 * s).toFixed(1));
-        progress = t;
+
+    function frame(now) {
+      const elapsed = pausedElapsed + (now - startTime);
+
+      // FRAÇÕES 0..1 que nunca diminuem
+      let scaleFrac = clamp(elapsed / SCALE_DUR_MS, 1e-6, 1);   // pulmão
+      let barFrac   = clamp(elapsed / PROG_DUR_MS, 1e-6, 1);    // barra
+
+      // Escala do pulmão cresce até o máximo e para
+      const s = 1 + 0.15 * easeOutCubic(scaleFrac);
+
+      // Atualiza arcos (raios) conforme escala
+      let base = pulmao.offsetWidth / 2;
+      arco1.setAttribute('r', (base * 0.72 * s).toFixed(1));
+      arco2.setAttribute('r', (base * 0.52 * s).toFixed(1));
+      arco3.setAttribute('r', (base * 0.33 * s).toFixed(1));
+
+      // Barra preenche de 0% a 100% e para
+      const barra = document.querySelector('.progresso');
+      const w = lerp(0, 100, easeInOutCubic(barFrac));
+      barra.style.width = `${w}%`;
+
+      // Continua chamando enquanto ainda houver algo pra evoluir ou estiver tocando
+      if (animando && (scaleFrac < 1 || barFrac < 1)) {
         animFrame = requestAnimationFrame(frame);
+      } else if (animando && scaleFrac >= 1 && barFrac >= 1) {
+        // tudo completo, mas mantemos estado; não volta
+        cancelAnimationFrame(animFrame);
       }
-      animFrame = requestAnimationFrame(frame);
     }
+
     function setActive(el) {
       document.querySelectorAll('.dock-flutuante .dock-icon').forEach(icon => {
         icon.classList.remove('active');
       });
       el.classList.add('active');
     }
+
+    function ajustarArcosAoTamanho() {
+      if (!pulmao || !arco1 || !arco2 || !arco3) return;
+      const base = pulmao.offsetWidth / 2;
+      arco1.setAttribute('r', (base * 0.72).toFixed(1));
+      arco2.setAttribute('r', (base * 0.52).toFixed(1));
+      arco3.setAttribute('r', (base * 0.33).toFixed(1));
+    }
+
     window.onload = () => {
       pulmao = document.querySelector('.pulmao');
       icon = document.getElementById('icon-play');
-      svg = document.getElementById('arcos-pulmao');
       arco1 = document.getElementById('arco1');
       arco2 = document.getElementById('arco2');
       arco3 = document.getElementById('arco3');
-      pulmao.style.animationPlayState = 'paused';
-    }
-    window.addEventListener('resize', function() {
-      if (pulmao && arco1 && arco2 && arco3) {
-        let base = pulmao.offsetWidth / 2;
-        arco1.setAttribute('r', (base * 0.72).toFixed(1));
-        arco2.setAttribute('r', (base * 0.52).toFixed(1));
-        arco3.setAttribute('r', (base * 0.33).toFixed(1));
-      }
-    });
+
+      // Inicia pausado (pulmão no mínimo, barra em 0%)
+      ajustarArcosAoTamanho();
+      document.querySelector('.progresso').style.width = '0%';
+    };
+
+    window.addEventListener('resize', ajustarArcosAoTamanho);
   </script>
 </head>
 <body>
@@ -313,11 +317,13 @@
       <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
     </svg>
   </button>
+
   <div class="container">
     <header>
       <div class="titulo-principal">Técnicas Respiratórias</div>
       <div class="subtitulo">Práticas para aliviar o estresse</div>
     </header>
+
     <main>
       <div class="pulmao-container">
         <div class="pulmao" id="pulmao">
@@ -328,36 +334,41 @@
           </svg>
         </div>
       </div>
-      <div class="nome-tecnica">Respiração 4-7-8</div>
+
+      <div class="nome-tecnica">Respiração Progressiva</div>
+
+      <!-- barra sincronizada e contínua -->
       <div class="barra"><div class="progresso"></div></div>
+
       <div class="botoes">
-        <button class="botao-play" onclick="toggleAnimacao()" id="btn-play">
+        <button class="botao-play" onclick="toggleAnimacao()" id="btn-play" aria-label="Iniciar/Pausar">
           <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M8 5v14l11-7z"/>
           </svg>
         </button>
       </div>
     </main>
+
     <!-- Espaço para não cobrir os componentes -->
     <div class="espaco-rodape"></div>
   </div>
-  
+
   <!-- DOCK FLUTUANTE CENTRALIZADO -->
-  <nav class="dock-flutuante">
-    <button class="dock-icon" onclick="setActive(this)">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+  <nav class="dock-flutuante" aria-label="Navegação">
+    <button class="dock-icon" onclick="setActive(this)" aria-label="Início">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     </button>
-    <button class="dock-icon" onclick="setActive(this)">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <button class="dock-icon" onclick="setActive(this)" aria-label="Bem-estar">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
     </button>
-    <button class="dock-icon active" onclick="setActive(this)">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg>
+    <button class="dock-icon active" onclick="setActive(this)" aria-label="Histórico">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg>
     </button>
-    <button class="dock-icon" onclick="setActive(this)">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/></svg>
+    <button class="dock-icon" onclick="setActive(this)" aria-label="Gráficos">
+      <svg viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/></svg>
     </button>
-    <button class="dock-icon" onclick="setActive(this)">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    <button class="dock-icon" onclick="setActive(this)" aria-label="Perfil">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
     </button>
   </nav>
 </body>
