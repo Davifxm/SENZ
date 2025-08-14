@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Técnicas Respiratórias</title>
+  <style>
+    :root {
+      --azul-principal: #05285C;
+      --azul-circulo: #3866A9;
+      --azul-leve: #ecf2fc;
+      --cinza-card: #f7fafd;
+      --cinza-desc: #425c73;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Arial", sans-serif; }
+    html, body {
+      background: white;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
+    .container {
+      width: 100vw;
+      max-width: 410px;
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      padding-bottom: 120px; /* espaço para dock */
+      background: white;
+    }
+    header {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 10px;
+      position: relative;
+    }
+    .titulo-principal {
+      color: var(--azul-principal);
+      font-size: 1.65rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+    .subtitulo {
+      font-size: 1rem;
+      color: #3881c6;
+      text-align: center;
+      margin-bottom: 0.6rem;
+      margin-top: 0.3rem;
+      letter-spacing: 0.01em;
+    }
+    .back-arrow {
+  position: absolute;
+  left: 4px; /* antes era 12px */
+  top: 2px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 1px 5px rgba(48,54,80,0.09);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  transition: background 0.2s;
+}
+    .back-arrow:hover { background: var(--azul-leve);}
+    .back-arrow svg { width: 19px; height: 19px; fill: var(--azul-principal);}
+    .cards-lista {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+      gap: 12px;
+    }
+    .tecnica-card {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 3px 16px rgba(80,125,200,0.06);
+      width: 100%;
+      max-width: 410px;
+      padding: 18px 18px 15px 15px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      border: 2.2px solid transparent;
+      transition: box-shadow 0.22s, background 0.18s, border 0.19s;
+      gap: 15px;
+    }
+    .tecnica-card:hover, .tecnica-card.active {
+      background: var(--azul-leve);
+      border: 2.2px solid #e2ebfa;
+      box-shadow: 0 8px 22px rgba(46,74,173,0.13);
+    }
+    .play-btn {
+      width: 40px; height: 40px;
+      background: var(--azul-leve);
+      border: none;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px #eaf0fb;
+      margin-right: 8px;
+      color: var(--azul-principal);
+      font-size: 1.14rem;
+      transition: background 0.19s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .play-btn svg { width: 21px; height: 21px; fill: var(--azul-principal);}
+    .tecnica-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .tecnica-nome {
+      font-weight: bold;
+      color: var(--azul-principal);
+      font-size: 1.12rem;
+      margin-bottom: 3px;
+    }
+    .tecnica-desc {
+      font-size: 0.93rem;
+      color: var(--cinza-desc);
+      margin-bottom: 2px;
+      font-weight: 400;
+      opacity: 0.85;
+    }
+    /* Dock padrão SENZ */
+    .dock {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 36px;
+      background: #f7f7f7;
+      padding: 18px 36px;
+      border-radius: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      z-index: 999;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .dock-icon {
+      width: 50px; height: 50px; border-radius: 50%; background: #e3e3e3;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.3s; cursor: pointer;
+      min-width: 50px;
+    }
+    .dock-icon:hover { transform: scale(1.15); }
+    .dock-icon.active { background: var(--azul-circulo); }
+    .dock-icon svg { width: 28px; height: 28px; fill: var(--azul-principal); }
+    .dock-icon.active svg { fill: #fff; }
+    @media (max-width: 900px) {
+      .container { max-width: 99vw; padding-top: 28px; }
+      .cards-lista { gap: 9px; }
+      .tecnica-card { padding: 14px 10px 13px 10px; border-radius: 12px;}
+      .tecnica-nome { font-size: 1rem;}
+      .tecnica-desc { font-size: 0.85rem;}
+      .play-btn { width: 28px; height: 28px; }
+      .play-btn svg { width: 16px; height: 16px;}
+      .dock { gap: 16px; padding: 12px 18px; border-radius: 22px; }
+      .dock-icon { width: 40px; height: 40px; min-width: 40px; }
+      .dock-icon svg { width: 22px; height: 22px; }
+    }
+    @media (max-width: 600px) {
+      .container { max-width: 100vw; padding-left: 3vw; padding-right: 3vw; }
+    }
+    @media (max-width: 480px) {
+      .container { padding-top: 13px; padding-bottom: 70px; }
+      .cards-lista { gap: 7px; }
+      .tecnica-card { padding: 9px 3px 7px 3px; border-radius: 8px;}
+      .tecnica-nome { font-size: 0.98rem;}
+      .play-btn { width: 20px; height: 20px; }
+      .play-btn svg { width: 11px; height: 11px;}
+      .dock { gap: 7px; padding: 8px 10px; border-radius: 16px; }
+      .dock-icon { width: 28px; height: 28px; min-width: 28px; }
+      .dock-icon svg { width: 13px; height: 13px; }
+    }
+  </style>
+  <script>
+    function goBack() { window.history.back(); }
+    function setActive(el) {
+      document.querySelectorAll('.dock-icon').forEach(icon => icon.classList.remove('active'));
+      el.classList.add('active');
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <button class="back-arrow" onclick="goBack()" aria-label="Voltar">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+      </button>
+      <div class="titulo-principal">Técnicas Respiratórias</div>
+      <div class="subtitulo">Práticas para aliviar o estresse</div>
+    </header>
+    <div class="cards-lista">
+      <!-- PRIMEIRO CARD COM REDIRECIONAMENTO PARA pulmao.html -->
+      <div class="tecnica-card" onclick="window.location.href='pulmao.html'" style="cursor:pointer;">
+        <button class="play-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="tecnica-info">
+          <div class="tecnica-nome">Respiração 4-7-8</div>
+          <div class="tecnica-desc">Iniciar com áudio guiado</div>
+        </div>
+      </div>
+      <!-- OUTROS CARDS -->
+      <div class="tecnica-card">
+        <button class="play-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="tecnica-info">
+          <div class="tecnica-nome">Respiração Box (Quadrada)</div>
+          <div class="tecnica-desc">Equilibre o corpo e a mente</div>
+        </div>
+      </div>
+      <div class="tecnica-card">
+        <button class="play-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="tecnica-info">
+          <div class="tecnica-nome">Respiração Diafragmática</div>
+          <div class="tecnica-desc">Respire enchendo a barriga. Sinta a paz.</div>
+        </div>
+      </div>
+      <div class="tecnica-card">
+        <button class="play-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="tecnica-info">
+          <div class="tecnica-nome">Respiração Kapalabhati</div>
+          <div class="tecnica-desc">Expire curta e forte pelas narinas várias vezes.</div>
+        </div>
+      </div>
+      <div class="tecnica-card">
+        <button class="play-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="tecnica-info">
+          <div class="tecnica-nome">Respiração Lenta e Profunda</div>
+          <div class="tecnica-desc">Respire bem devagar e profundo</div>
+        </div>
+      </div>
+      <div class="tecnica-card">
+        <button class="play-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="tecnica-info">
+          <div class="tecnica-nome">Respiração Wim Hof</div>
+          <div class="tecnica-desc">Inspire fundo 30x e depois segure sem ar por …</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- DOCK PADRÃO SENZ -->
+  <div class="dock">
+    <!-- Casa -->
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+    </div>
+    <!-- Frequência Cardíaca -->
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 
+        12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 
+        3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 
+        16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 
+        6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+    <!-- Histórico Emocional -->
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 
+          12s4.48 10 10 10 10-4.48 10-10S17.52 
+          2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 
+          8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/>
+      </svg>
+    </div>
+    <!-- Gráficos -->
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M3 17h2v-7H3v7zm4 
+          0h2V7H7v10zm4 0h2v-4h-2v4zm4 
+          0h2V4h-2v13zm4 0h2v-9h-2v9z"/>
+      </svg>
+    </div>
+    <!-- Perfil (ativo) -->
+    <div class="dock-icon active" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 
+          1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

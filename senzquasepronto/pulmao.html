@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Técnicas Respiratórias</title>
+  <style>
+    :root {
+      --azul-principal: #05285C;
+      --azul-circulo: #3866A9;
+      --azul-leve: #ecf2fc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Arial", sans-serif; }
+    body {
+      background: white;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    .container {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .back-arrow {
+      position: fixed;
+      top: 26px;
+      left: 26px;
+      background: #fff;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 1px 5px rgba(48,54,80,0.09);
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 999;
+      transition: background 0.2s;
+    }
+    .back-arrow:hover {
+      background: var(--azul-leve);
+    }
+    .back-arrow svg {
+      width: 25px;
+      height: 25px;
+      fill: var(--azul-principal);
+      transition: fill 0.18s;
+    }
+    @media (max-width: 700px) {
+      .back-arrow { width: 36px; height: 36px; top: 12px; left: 10px;}
+      .back-arrow svg { width: 19px; height: 19px;}
+    }
+    header {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      padding-top: 2.3rem;
+      padding-bottom: 0.3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .titulo-principal {
+      color: var(--azul-principal);
+      font-size: 1.65rem;
+      font-weight: bold;
+      margin-bottom: 2px;
+      text-align: center;
+    }
+    .subtitulo {
+      font-size: 1rem;
+      color: #3881c6;
+      text-align: center;
+      margin-bottom: 1.1rem;
+      margin-top: 0.15rem;
+      letter-spacing: 0.01em;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      padding-bottom: 110px;
+    }
+    .pulmao-container {
+      margin-top: 70px;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .pulmao {
+      position: relative;
+      width: min(55vw, 230px);
+      height: min(55vw, 230px);
+      max-width: 230px;
+      max-height: 230px;
+      min-width: 110px;
+      min-height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 60% 40%, #4c6cb3 60%, var(--azul-circulo) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: expandir 5s ease-in-out infinite;
+      animation-play-state: paused;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+      overflow: visible;
+    }
+    .pulmao svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .pulmao .pulmao-arco { stroke: white; fill: none; opacity: 0.24; stroke-width: 4; }
+    .pulmao .pulmao-arco2 { stroke-width: 2.6; opacity: 0.13;}
+    .pulmao .pulmao-arco3 { stroke-width: 1.5; opacity: 0.08;}
+    @keyframes expandir {
+      0%, 100% { transform: scale(1);}
+      50% { transform: scale(1.12);}
+    }
+    .nome-tecnica {
+      font-weight: bold;
+      font-size: 1.15rem;
+      color: var(--azul-principal);
+      margin-top: 1.15rem;
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+    .barra {
+      margin: 0.35rem auto 0.70rem auto;
+      width: min(280px, 65vw);
+      height: 3.5px;
+      background-color: #ccc;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .progresso {
+      width: 37%;
+      height: 100%;
+      background-color: var(--azul-principal);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+    .botoes {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.0rem;
+      margin-bottom: 2.6rem;
+      width: 100%;
+    }
+    .botao-play {
+      width: 46px; height: 46px;
+      background-color: var(--azul-principal);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(52,80,110,0.09);
+    }
+    .botao-play svg { width: 24px; height: 24px; fill: #fff;}
+
+    /* Dock flutuante centralizado */
+    .espaco-rodape {
+      height: 105px;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .dock-flutuante {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 22px;
+      background: #fff;
+      box-shadow: 0 8px 32px rgba(5,40,92,0.13), 0 1.5px 8px rgba(48,54,80,0.11);
+      border-radius: 28px;
+      padding: 12px 28px;
+      display: flex;
+      gap: 32px;
+      z-index: 1100;
+      min-width: 240px;
+      max-width: 94vw;
+    }
+    .dock-flutuante .dock-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #e9eef9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.17s, transform 0.18s;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-size: 1.35rem;
+    }
+    .dock-flutuante .dock-icon.active,
+    .dock-flutuante .dock-icon:hover {
+      background: var(--azul-circulo);
+      color: #fff;
+      transform: scale(1.07);
+    }
+    .dock-flutuante .dock-icon svg {
+      width: 24px; height: 24px; fill: var(--azul-principal); transition: fill 0.18s;}
+    .dock-flutuante .dock-icon.active svg,
+    .dock-flutuante .dock-icon:hover svg { fill: #fff; }
+
+    @media (max-width: 700px) {
+      .container,
+      main,
+      .espaco-rodape,
+      header {
+        max-width: 99vw;
+        padding: 0 6px;
+      }
+    }
+    @media (max-width: 600px) {
+      .dock-flutuante { padding: 7px 8px; border-radius: 17px; gap: 12px; bottom: 7px;}
+      .dock-flutuante .dock-icon { width: 31px; height: 31px; font-size: 1.08rem;}
+      .dock-flutuante .dock-icon svg { width: 15px; height: 15px;}
+      .espaco-rodape { height: 57px;}
+    }
+    @media (max-width: 400px) {
+      .dock-flutuante { padding: 2px 1px; border-radius: 8px; gap: 7px;}
+      .dock-flutuante .dock-icon { width: 21px; height: 21px; font-size: 0.91rem;}
+      .dock-flutuante .dock-icon svg { width: 10px; height: 10px;}
+      .espaco-rodape { height: 32px;}
+    }
+  </style>
+  <script>
+    function goBack() { window.history.back(); }
+    let animando = false;
+    let pulmao, icon, svg, arco1, arco2, arco3, animFrame;
+    let progress = 0;
+    function toggleAnimacao() {
+      animando = !animando;
+      if (animando) {
+        pulmao.style.animationPlayState = 'running';
+        icon.setAttribute('d', 'M6 4h4v16H6zm8 0h4v16h-4z');
+        animateSVG();
+      } else {
+        pulmao.style.animationPlayState = 'paused';
+        icon.setAttribute('d', 'M8 5v14l11-7z');
+        cancelAnimationFrame(animFrame);
+      }
+    }
+    function animateSVG() {
+      const dur = 5000;
+      const start = performance.now() - (progress * dur);
+      function frame(now) {
+        let t = ((now - start) % dur) / dur;
+        let s = 1 + 0.15 * Math.sin(t * 2 * Math.PI);
+        let base = pulmao.offsetWidth / 2;
+        arco1.setAttribute('r', (base * 0.72 * s).toFixed(1));
+        arco2.setAttribute('r', (base * 0.52 * s).toFixed(1));
+        arco3.setAttribute('r', (base * 0.33 * s).toFixed(1));
+        progress = t;
+        animFrame = requestAnimationFrame(frame);
+      }
+      animFrame = requestAnimationFrame(frame);
+    }
+    function setActive(el) {
+      document.querySelectorAll('.dock-flutuante .dock-icon').forEach(icon => {
+        icon.classList.remove('active');
+      });
+      el.classList.add('active');
+    }
+    window.onload = () => {
+      pulmao = document.querySelector('.pulmao');
+      icon = document.getElementById('icon-play');
+      svg = document.getElementById('arcos-pulmao');
+      arco1 = document.getElementById('arco1');
+      arco2 = document.getElementById('arco2');
+      arco3 = document.getElementById('arco3');
+      pulmao.style.animationPlayState = 'paused';
+    }
+    window.addEventListener('resize', function() {
+      if (pulmao && arco1 && arco2 && arco3) {
+        let base = pulmao.offsetWidth / 2;
+        arco1.setAttribute('r', (base * 0.72).toFixed(1));
+        arco2.setAttribute('r', (base * 0.52).toFixed(1));
+        arco3.setAttribute('r', (base * 0.33).toFixed(1));
+      }
+    });
+  </script>
+</head>
+<body>
+  <button class="back-arrow" onclick="goBack()" aria-label="Voltar">
+    <svg viewBox="0 0 24 24">
+      <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+    </svg>
+  </button>
+  <div class="container">
+    <header>
+      <div class="titulo-principal">Técnicas Respiratórias</div>
+      <div class="subtitulo">Práticas para aliviar o estresse</div>
+    </header>
+    <main>
+      <div class="pulmao-container">
+        <div class="pulmao" id="pulmao">
+          <svg id="arcos-pulmao" viewBox="0 0 360 360">
+            <circle id="arco1" class="pulmao-arco" cx="180" cy="180" r="130"/>
+            <circle id="arco2" class="pulmao-arco pulmao-arco2" cx="180" cy="180" r="90"/>
+            <circle id="arco3" class="pulmao-arco pulmao-arco3" cx="180" cy="180" r="60"/>
+          </svg>
+        </div>
+      </div>
+      <div class="nome-tecnica">Respiração 4-7-8</div>
+      <div class="barra"><div class="progresso"></div></div>
+      <div class="botoes">
+        <button class="botao-play" onclick="toggleAnimacao()" id="btn-play">
+          <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
+    </main>
+    <!-- Espaço para não cobrir os componentes -->
+    <div class="espaco-rodape"></div>
+  </div>
+  
+  <!-- DOCK FLUTUANTE CENTRALIZADO -->
+  <nav class="dock-flutuante">
+    <button class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+    <button class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </button>
+    <button class="dock-icon active" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg>
+    </button>
+    <button class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/></svg>
+    </button>
+    <button class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </button>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sons da Natureza</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(180deg, #1db954, #121212 60%);
+      color: #ffffff;
+      padding-bottom: 120px;
+      position: relative;
+    }
+
+    .arrow-left, .usuario {
+      position: absolute; top: 20px; width: 36px; height: 36px;
+    }
+
+    .arrow-left {
+      left: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+
+    .arrow-left svg {
+      width: 100%; height: 100%; transition: transform 0.2s, opacity 0.3s; fill: #ffffff;
+    }
+
+    .arrow-left:hover svg { transform: scale(1.1); opacity: 0.85; }
+
+    .usuario { right: 20px; }
+
+    .m-sicas-calmante {
+      text-align: center; font-size: 28px; font-weight: bold; margin-top: 80px;
+    }
+
+    .pr-ticas-para-aliviar-o-estresse {
+      text-align: center; font-size: 16px; margin: 10px 0 30px; color: #c9c9c9;
+    }
+
+    .rectangle-47 {
+      width: 90%; max-width: 400px; margin: 0 auto; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .arvores-1 { width: 100%; height: auto; display: block; }
+
+    .setas-baixo {
+      display: flex; justify-content: space-between; align-items: center;
+      width: 90%; max-width: 400px; margin: 16px auto 0;
+    }
+
+    .seta {
+      width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+
+    .seta svg {
+      width: 100%; height: 100%; transition: transform 0.2s, opacity 0.3s; fill: #ffffff;
+    }
+
+    .seta:hover svg { transform: scale(1.1); opacity: 0.85; }
+
+    .sons-da-natureza {
+      text-align: center; font-size: 30px; font-weight: 600; margin-top: -35px; color: #1db954;
+    }
+
+    .pause-button {
+      display: block; margin: 20px auto; padding: 12px 32px;
+      background-color: #1db954; border: none; border-radius: 24px; color: white;
+      font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s;
+      box-shadow: 0 6px 16px rgba(29,185,84,.25);
+    }
+    .pause-button:hover { background-color: #1ed760; }
+
+    /* Barra de progresso (suave e bonita) */
+    .line-container {
+      position: relative; width: 90%; max-width: 400px; margin: 30px auto;
+      height: 10px; background: rgba(255,255,255,.12); border-radius: 999px; overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+
+    .line-highlight {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(29,185,84,.95), rgba(30,215,96,.95));
+      width: 0%;
+      border-radius: 999px;
+      box-shadow: 0 0 16px rgba(29,185,84,.35);
+      transition: width .35s ease;
+    }
+
+    .ellipse-31 {
+      width: 16px; height: 16px; background: #ffffff; border-radius: 50%;
+      position: absolute; left: 0%; top: 50%; transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.15), 0 6px 12px rgba(0,0,0,.25), 0 0 14px rgba(29,185,84,.4);
+      transition: left .35s ease;
+    }
+
+    .dock {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 18px; background: #282828; padding: 14px 28px; border-radius: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5); z-index: 999;
+    }
+
+    .dock-icon {
+      width: 48px; height: 48px; border-radius: 50%; background: #121212;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.3s; cursor: pointer;
+    }
+
+    .dock-icon:hover { transform: scale(1.1); background: #1db954; }
+    .dock-icon svg { width: 24px; height: 24px; fill: #fff; }
+    .dock-icon.active { background: #1db954; }
+    .dock-icon.active svg { fill: #000; }
+
+    @media (max-width: 600px) {
+      .m-sicas-calmante { font-size: 24px; }
+      .sons-da-natureza { font-size: 20px; }
+      .pause-button { font-size: 14px; padding: 10px 24px; }
+      .dock { gap: 10px; padding: 10px 16px; }
+      .dock-icon { width: 38px; height: 38px; }
+      .dock-icon svg { width: 20px; height: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPO: seta voltar (SVG) -->
+  <div class="arrow-left" onclick="history.back()" aria-label="Voltar">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+    </svg>
+  </div>
+
+  <div class="m-sicas-calmante">Músicas Calmantes</div>
+  <div class="pr-ticas-para-aliviar-o-estresse">Práticas para aliviar o estresse</div>
+
+  <div class="rectangle-47">
+    <img class="arvores-1" src="assets/img/arvores SONATU.png" alt="Natureza">
+  </div>
+
+  <!-- ABAIXO DA IMAGEM: setas esquerda/direita (SVG) -->
+  <div class="setas-baixo">
+    <div class="seta" onclick="window.location.href='sonmar.html'" aria-label="Voltar">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </div>
+    <div class="seta" onclick="window.location.href='sonmar.html'" aria-label="Próxima">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+    </div>
+  </div>
+
+  <div class="sons-da-natureza">Sons da Natureza</div>
+  <button class="pause-button" onclick="toggleMusic()">Pausar</button>
+
+  <div class="line-container">
+    <div class="line-highlight"></div>
+    <div class="ellipse-31"></div>
+  </div>
+
+ <div class="dock">
+  <div class="dock-icon" onclick="setActive(this); window.location.href='telainicial.html'">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+  </div>
+  <div class="dock-icon active" onclick="setActive(this); window.location.href='intervencoes.html'">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  </div>
+  <div class="dock-icon" onclick="setActive(this); window.location.href='historico.html'">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg>
+  </div>
+  <div class="dock-icon" onclick="setActive(this); window.location.href='dados.html'">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/></svg>
+  </div>
+  <div class="dock-icon" onclick="setActive(this); window.location.href='perfil.html'">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+  </div>
+</div>
+  <script>
+    // ======= CONFIG =======
+    const DURATION_MS = 10000;              // 45s mais devagar
+    const NEXT_URL = 'sonmar.html';         // para onde vai ao terminar
+    // ======================
+
+    let playing = true;
+    let startTime = 0;
+    let pausedElapsed = 0;
+    let rafId = null;
+
+    const btn = document.querySelector('.pause-button');
+    const bar = document.querySelector('.line-highlight');
+    const knob = document.querySelector('.ellipse-31');
+
+    function updateProgress(frac) {
+      const pct = (frac * 100);
+      bar.style.width = pct + '%';
+      knob.style.left = pct + '%';
+    }
+
+    function step() {
+      const now = performance.now();
+      const elapsed = now - startTime;
+      let frac = Math.min((pausedElapsed + elapsed) / DURATION_MS, 1);
+      updateProgress(frac);
+
+      if (frac < 1 && playing) {
+        rafId = requestAnimationFrame(step);
+      } else if (frac >= 1) {
+        window.location.href = NEXT_URL;
+      }
+    }
+
+    function resume() {
+      startTime = performance.now();
+      playing = true;
+      rafId = requestAnimationFrame(step);
+    }
+
+    function pause() {
+      playing = false;
+      cancelAnimationFrame(rafId);
+      const now = performance.now();
+      pausedElapsed += (now - startTime);
+    }
+
+    function toggleMusic() {
+      if (playing) {
+        btn.innerHTML = 'Reproduzir';
+        pause();
+      } else {
+        btn.innerHTML = 'Pausar';
+        resume();
+      }
+    }
+
+    function setActive(el) {
+      document.querySelectorAll('.dock-icon').forEach(icon => icon.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // inicia do zero, animando
+    window.addEventListener('DOMContentLoaded', () => {
+      pausedElapsed = 0;
+      updateProgress(0);
+      resume();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>SENZ – Histórico</title>
+  <style>
+    :root{
+      --azul-principal:#05285C;
+      --azul-circulo:#3866A9;
+      --azul-leve:#eaf3ff;
+      --azul-leve2:#f1f6ff;
+      --cinza-bg:#f8fafb;
+      --branco:#fff;
+      --cinza-card:#fff;
+      --cinza-borda:#e3e7ed;
+      --cinza-txt:#6c7b8a;
+      --sombra:rgba(48,54,80,.08);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
+    html,body{height:100%;background:var(--cinza-bg)}
+    body{
+      min-height:100vh;
+      display:flex;                 /* centra o conteúdo */
+      align-items:flex-start;       /* alinha pelo topo */
+      justify-content:center;       /* centraliza horizontal */
+      padding: clamp(12px,3vh,24px) 12px calc(120px + env(safe-area-inset-bottom,0px));
+    }
+
+    /* Coluna central responsiva */
+    .page{
+      width:100%;
+      max-width:430px;              /* coluna “mobile-first” */
+      margin:0 auto;                /* garante centralização */
+      display:flex;flex-direction:column;align-items:center;gap:14px;
+    }
+
+    /* Cabeçalho curvo centralizado */
+    .hero{
+      width:100%;
+      background:linear-gradient(180deg,#e6f0ff 0%,#edf5ff 100%);
+      padding:28px 18px 46px 18px;  /* um pouco mais curto embaixo */
+      border-bottom-left-radius:48% 14%;
+      border-bottom-right-radius:48% 14%;
+      box-shadow:0 2px 10px var(--sombra);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;
+    }
+    .hero h1{
+      color:var(--azul-principal);
+      font-size:clamp(1.3rem,2.5vw,1.7rem);
+      margin-bottom:8px;            /* espaço embaixo do título */
+      line-height:1.15;
+    }
+    .hero p{
+      color:var(--azul-principal);opacity:.85;
+      font-size:clamp(.92rem,2vw,1rem);
+      max-width:360px;line-height:1.4;
+    }
+
+    /* Busca central — com espaço do header (NÃO encosta) */
+    .search{
+      width:100%;max-width:360px;
+      margin:14px auto 6px auto;    /* ⬅ afastado do header */
+      position:relative;
+    }
+    .search input{
+      width:100%;padding:12px 14px 12px 40px;border-radius:12px;border:1px solid var(--cinza-borda);
+      background:var(--branco);box-shadow:0 1px 6px var(--sombra);outline:none;
+      font-size:clamp(.92rem,2vw,.98rem);color:#234;
+    }
+    .search svg{
+      position:absolute;left:12px;top:50%;transform:translateY(-50%);
+      width:18px;height:18px;fill:var(--azul-circulo);opacity:.9;
+    }
+
+    /* Lista central e alinhada */
+    .list{
+      width:100%;max-width:360px;margin:8px auto 0 auto;
+      display:flex;flex-direction:column;gap:12px;
+    }
+    .history-item{
+      display:flex;align-items:center;gap:12px;background:var(--azul-leve2);
+      border:1px solid #dbe7fb;border-radius:12px;padding:12px 14px;cursor:pointer;
+      transition:transform .12s ease, background .2s ease, border-color .2s ease;
+    }
+    .history-item:hover{transform:translateY(-1px);background:var(--azul-leve);border-color:#cfe0ff}
+    .history-item .icon{
+      width:34px;height:34px;border-radius:10px;background:#e9f1ff;display:grid;place-items:center;
+      border:1px solid #d6e4ff;box-shadow:0 1px 4px var(--sombra);flex:0 0 34px;
+    }
+    .history-item .icon svg{width:18px;height:18px;fill:#2c61a6}
+    .history-item .date{color:#2c4a7a;font-weight:700;letter-spacing:.3px;font-size:clamp(.98rem,2vw,1.02rem)}
+
+    .see-more{text-align:center;margin:10px 0 0 0;width:100%}
+    .see-more a{font-size:.92rem;color:var(--azul-circulo);text-decoration:none}
+
+    /* Dock (rodapé) fixo e centralizado */
+    .dock{
+      position:fixed;left:50%;bottom:max(20px, env(safe-area-inset-bottom,0px));
+      transform:translateX(-50%);
+      display:flex;gap:22px;background:#f7f7f7;
+      padding:12px 20px;border-radius:20px;
+      box-shadow:0 3px 10px rgba(0,0,0,.1);z-index:999;
+    }
+    .dock-icon{
+      width:42px;height:42px;border-radius:50%;background:#e3e3e3;
+      display:flex;align-items:center;justify-content:center;
+      transition:transform .2s, background .3s;cursor:pointer;
+    }
+    .dock-icon:hover{transform:scale(1.12)}
+    .dock-icon.active{background:#3866A9}
+    .dock-icon svg{width:24px;height:24px;fill:#05285c}
+    .dock-icon.active svg{fill:#fff}
+
+    @media (min-width: 900px){
+      .hero{border-bottom-left-radius:38% 12%;border-bottom-right-radius:38% 12%}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>Histórico</h1>
+      <p>Veja os registros anteriores das suas sessões ou atividades.</p>
+    </section>
+
+    <div class="search">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20 15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input id="busca" type="text" placeholder="Pesquise uma data específica">
+    </div>
+
+    <div class="list" id="lista-datas">
+      <div class="history-item" data-date="2025-01-05">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
+        </div>
+        <div class="date">05/01/2025</div>
+      </div>
+
+      <div class="history-item" data-date="2025-02-22">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
+        </div>
+        <div class="date">22/02/2025</div>
+      </div>
+
+      <div class="history-item" data-date="2025-03-13">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
+        </div>
+        <div class="date">13/03/2025</div>
+      </div>
+
+      <div class="history-item" data-date="2025-04-28">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
+        </div>
+        <div class="date">28/04/2025</div>
+      </div>
+
+      <div class="history-item" data-date="2025-05-09">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
+        </div>
+        <div class="date">09/05/2025</div>
+      </div>
+
+      <div class="history-item" data-date="2025-08-17">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
+        </div>
+        <div class="date">17/08/2025</div>
+      </div>
+    </div>
+
+    <div class="see-more"><a href="#">ver mais</a></div>
+  </main>
+
+  <!-- Dock (rodapé) -->
+  <div class="dock">
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 .81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </div>
+    <div class="dock-icon active" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4 -4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
+  </div>
+
+  <script>
+    // Navegação de cada item
+    document.querySelectorAll('.history-item').forEach(item=>{
+      item.addEventListener('click',()=>{
+        const d=item.dataset.date;
+        window.location.href=`historico-detalhe.html?d=${d}`;
+      });
+    });
+
+    // Busca por texto (data visível)
+    const inputBusca=document.getElementById('busca');
+    inputBusca.addEventListener('input',()=>{
+      const termo=inputBusca.value.trim().toLowerCase();
+      document.querySelectorAll('.history-item .date').forEach(el=>{
+        const box=el.closest('.history-item');
+        box.style.display=el.textContent.toLowerCase().includes(termo)?'flex':'none';
+      });
+    });
+
+    // Active visual + rotas do dock
+    function setActive(el){
+      document.querySelectorAll('.dock-icon').forEach(i=>i.classList.remove('active'));
+      el.classList.add('active');
+    }
+    const dockIcons=document.querySelectorAll('.dock-icon');
+    if(dockIcons.length>=5){
+      dockIcons[0].addEventListener('click',()=>{window.location.href='telainicial.html';});
+      dockIcons[1].addEventListener('click',()=>{window.location.href='intervencoes.html';});
+      dockIcons[2].addEventListener('click',()=>{window.location.href='historico.html';});
+      dockIcons[3].addEventListener('click',()=>{window.location.href='dados.html';});
+      dockIcons[4].addEventListener('click',()=>{window.location.href='perfil.html';});
+    }
+  </script>
+</body>
+</html>
