@@ -1,0 +1,184 @@
+:root {
+      --azul-principal: #05285C;
+      --azul-circulo: #3866A9;
+      --azul-leve: #ecf2fc;
+      --cinza-card: #f7fafd;
+      --cinza-desc: #425c73;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Arial", sans-serif; }
+    html, body {
+      background: white;
+      min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
+    .container {
+      width: 100vw;
+      max-width: 410px;
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      padding-bottom: 120px; /* espaço para dock */
+      background: white;
+    }
+    header {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 10px;
+      position: relative;
+    }
+    .titulo-principal {
+      color: var(--azul-principal);
+      font-size: 1.65rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+    .subtitulo {
+      font-size: 1rem;
+      color: #3881c6;
+      text-align: center;
+      margin-bottom: 0.6rem;
+      margin-top: 0.3rem;
+      letter-spacing: 0.01em;
+    }
+    .back-arrow {
+      position: absolute;
+      left: 12px; top: 2px;
+      background: #fff;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 1px 5px rgba(48,54,80,0.09);
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      z-index: 999;
+      transition: background 0.2s;
+    }
+    .back-arrow:hover { background: var(--azul-leve);}
+    .back-arrow svg { width: 19px; height: 19px; fill: var(--azul-principal);}
+    .cards-lista {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+      gap: 12px;
+    }
+    .tecnica-card {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 3px 16px rgba(80,125,200,0.06);
+      width: 100%;
+      max-width: 410px;
+      padding: 18px 18px 15px 15px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      border: 2.2px solid transparent;
+      transition: box-shadow 0.22s, background 0.18s, border 0.19s;
+      gap: 15px;
+    }
+    .tecnica-card:hover, .tecnica-card.active {
+      background: var(--azul-leve);
+      border: 2.2px solid #e2ebfa;
+      box-shadow: 0 8px 22px rgba(46,74,173,0.13);
+    }
+    .play-btn {
+      width: 40px; height: 40px;
+      background: var(--azul-leve);
+      border: none;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px #eaf0fb;
+      margin-right: 8px;
+      color: var(--azul-principal);
+      font-size: 1.14rem;
+      transition: background 0.19s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .play-btn svg { width: 21px; height: 21px; fill: var(--azul-principal);}
+    .tecnica-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .tecnica-nome {
+      font-weight: bold;
+      color: var(--azul-principal);
+      font-size: 1.12rem;
+      margin-bottom: 3px;
+    }
+    .tecnica-desc {
+      font-size: 0.93rem;
+      color: var(--cinza-desc);
+      margin-bottom: 2px;
+      font-weight: 400;
+      opacity: 0.85;
+    }
+    /* Dock padrão SENZ */
+    .dock {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 36px;
+      background: #f7f7f7;
+      padding: 18px 36px;
+      border-radius: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      z-index: 999;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .dock-icon {
+      width: 50px; height: 50px; border-radius: 50%; background: #e3e3e3;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, background 0.3s; cursor: pointer;
+      min-width: 50px;
+    }
+    .dock-icon:hover { transform: scale(1.15); }
+    .dock-icon.active { background: var(--azul-circulo); }
+    .dock-icon svg { width: 28px; height: 28px; fill: var(--azul-principal); }
+    .dock-icon.active svg { fill: #fff; }
+    @media (max-width: 900px) {
+      .container { max-width: 99vw; padding-top: 28px; }
+      .cards-lista { gap: 9px; }
+      .tecnica-card { padding: 14px 10px 13px 10px; border-radius: 12px;}
+      .tecnica-nome { font-size: 1rem;}
+      .tecnica-desc { font-size: 0.85rem;}
+      .play-btn { width: 28px; height: 28px; }
+      .play-btn svg { width: 16px; height: 16px;}
+      .dock { gap: 16px; padding: 12px 18px; border-radius: 22px; }
+      .dock-icon { width: 40px; height: 40px; min-width: 40px; }
+      .dock-icon svg { width: 22px; height: 22px; }
+    }
+    @media (max-width: 600px) {
+      .container { max-width: 100vw; padding-left: 3vw; padding-right: 3vw; }
+    }
+    @media (max-width: 480px) {
+      .container { padding-top: 13px; padding-bottom: 70px; }
+      .cards-lista { gap: 7px; }
+      .tecnica-card { padding: 9px 3px 7px 3px; border-radius: 8px;}
+      .tecnica-nome { font-size: 0.98rem;}
+      .play-btn { width: 20px; height: 20px; }
+      .play-btn svg { width: 11px; height: 11px;}
+      .dock { gap: 7px; padding: 8px 10px; border-radius: 16px; }
+      .dock-icon { width: 28px; height: 28px; min-width: 28px; }
+      .dock-icon svg { width: 13px; height: 13px; }
+    }
