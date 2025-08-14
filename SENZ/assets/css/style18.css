@@ -1,0 +1,211 @@
+* {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(180deg, #1db954, #121212 60%);
+      color: #ffffff;
+      padding-bottom: 120px;
+      position: relative;
+    }
+
+    .arrow-left, .usuario {
+      position: absolute;
+      top: 20px;
+      width: 36px;
+      height: 36px;
+    }
+
+    .arrow-left {
+      left: 20px;
+      cursor: pointer;
+    }
+
+    .usuario {
+      right: 20px;
+    }
+
+    .m-sicas-calmante {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 80px;
+    }
+
+    .pr-ticas-para-aliviar-o-estresse {
+      text-align: center;
+      font-size: 16px;
+      margin: 10px 0 30px;
+      color: #c9c9c9;
+    }
+
+    .rectangle-47 {
+      width: 90%;
+      max-width: 400px;
+      margin: 0 auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .arvores-1 {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .setas-baixo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      max-width: 400px;
+      margin: 16px auto 0;
+    }
+
+    .setas-baixo img {
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .setas-baixo img:hover {
+      transform: scale(1.1);
+    }
+
+    .sons-da-natureza {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 600;
+      margin-top: -35px;
+      color: #1db954;
+    }
+
+    .pause-button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 32px;
+      background-color: #1db954;
+      border: none;
+      border-radius: 24px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .pause-button:hover {
+      background-color: #1ed760;
+    }
+
+    .line-container {
+      position: relative;
+      width: 90%;
+      max-width: 400px;
+      margin: 30px auto;
+      height: 6px;
+      background: #444;
+      border-radius: 4px;
+    }
+
+    .line-highlight {
+      height: 100%;
+      background-color: #1db954;
+      width: 40%;
+      border-radius: 4px;
+    }
+
+    .ellipse-31 {
+      width: 14px;
+      height: 14px;
+      background: #1db954;
+      border-radius: 50%;
+      position: absolute;
+      left: 40%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .dock {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 18px;
+      background: #282828;
+      padding: 14px 28px;
+      border-radius: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+
+    .dock-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #121212;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.3s;
+      cursor: pointer;
+    }
+
+    .dock-icon:hover {
+      transform: scale(1.1);
+      background: #1db954;
+    }
+
+    .dock-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+
+    .dock-icon.active {
+      background: #1db954;
+    }
+
+    .dock-icon.active svg {
+      fill: #000;
+    }
+
+    @media (max-width: 600px) {
+      .m-sicas-calmante {
+        font-size: 24px;
+      }
+
+      .sons-da-natureza {
+        font-size: 20px;
+      }
+
+      .pause-button {
+        font-size: 14px;
+        padding: 10px 24px;
+      }
+
+      .dock {
+        gap: 10px;
+        padding: 10px 16px;
+      }
+
+      .dock-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+      .dock-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+    }

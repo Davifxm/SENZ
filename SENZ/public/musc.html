@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+     <link rel="icon" href="../assets/img/logo.png" type="image/x-icon">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SENZ</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style12.css">
+
+</head>
+<body>
+
+  <div class="container">
+    <img class="back-icon" src="Arrow left (1).png" alt="Voltar" />
+    <img class="user-icon" src="0c5f623c-f62d-43a0-878f-fb3a88267eef 3.png" alt="Usuário" />
+
+    <div class="m-sicas-calmante">Músicas Calmantes</div>
+    <div class="pr-ticas-para-aliviar-o-estresse">Práticas para aliviar o estresse</div>
+
+    <!-- BLOCOS CLICÁVEIS COM LINKS PERSONALIZADOS -->
+    <div class="music-box" data-link="sonnatu.html">
+      <div class="icon-circle"><img src="../assets/img/Polygon 1.png" alt="icon" /></div>
+      <div class="music-title">Sons da natureza</div>
+      <div class="music-desc">Chuva, floresta e mar</div>
+    </div>
+
+    <div class="music-box" data-link="ondas-alfa.html">
+      <div class="icon-circle"><img src="../assets/img/Polygon 2.png" alt="icon" /></div>
+      <div class="music-title">Ondas Cerebrais Alfa</div>
+      <div class="music-desc">Relaxe cada parte do corpo</div>
+    </div>
+
+    <div class="music-box" data-link="instrumental.html">
+      <div class="icon-circle"><img src="../assets/img/Polygon 3.png" alt="icon" /></div>
+      <div class="music-title">Instrumental Relaxante</div>
+      <div class="music-desc">Violão, piano, violino...</div>
+    </div>
+
+    <div class="music-box" data-link="batidas.html">
+      <div class="icon-circle"><img src="../assets/img/Polygon 4.png" alt="icon" /></div>
+      <div class="music-title">Batidas Lentas e Suaves</div>
+      <div class="music-desc">Ritmos entre 60 e 80 batidas</div>
+    </div>
+  </div>
+
+  <!-- DOCK BAR -->
+  <div class="dock">
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </div>
+    <div class="dock-icon active" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h6v-2h-4z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V4h-2v13zm4 0h2v-9h-2v9z"/></svg>
+    </div>
+    <div class="dock-icon" onclick="setActive(this)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
+  </div>
+
+  <script src="../assets/js/script12.js"></script>
+
+</body>
+</html>
