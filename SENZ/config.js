@@ -1,2 +1,3 @@
 // Configuração da API Groq
-const GROQ_API_KEY = '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';
+
+const GROQ_API_KEY = 'vai se ferrar curioso';
