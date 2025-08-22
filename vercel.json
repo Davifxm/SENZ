@@ -2,15 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "senz/package.json",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "senz/senz/package.json",
+      "src": "Senz/package.json",
       "use": "@vercel/static-build"
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "senz/senz/$1" }
+    { "src": "/(.*)", "dest": "Senz/$1" }
   ]
 }
